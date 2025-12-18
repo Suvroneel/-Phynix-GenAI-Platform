@@ -40,6 +40,8 @@ The platform emphasizes **privacy, data security, and actionable insights**, off
 
 **Purpose:** Core interaction interface with Ashva, enabling users to express emotions and receive context-aware support.  
 
+  ![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/a4c386cbf01e77109956934c15b14f8402244c04/Site%20Images/Phynix_Chat_Interface_UI.png)
+
 **Key Features & Technical Details:**  
 - **Dynamic Chat Interface:**  
   - User and bot messages rendered in styled chat bubbles using custom CSS.  
@@ -63,7 +65,8 @@ The platform emphasizes **privacy, data security, and actionable insights**, off
 ### Home Page
 
 **Purpose:** Central dashboard offering insights, metrics, and daily motivational guidance.  
-
+![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_1.png)
+![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_2.png)
 **Key Features & Technical Details:**  
 - **Dashboard & Metrics:**  
   - Charts displaying emotion trends, confidence levels, and risk progression using historical chat data.  
@@ -77,12 +80,15 @@ The platform emphasizes **privacy, data security, and actionable insights**, off
 - **UX Enhancements:**  
   - Animated welcome messages, styled quote boxes, and responsive multi-column layout.  
   - Centralized, visually prominent calls-to-action to encourage engagement.
-
+ 
+  
 ---
 
 ### Mood Journal Page
 
 **Purpose:** Private and secure journaling space for users to log reflections and track emotional well-being.  
+
+![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Mood_journal.png)
 
 **Key Features & Technical Details:**  
 - **Profile Management:**  
