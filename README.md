@@ -36,6 +36,54 @@ The platform emphasizes **privacy, data security, and actionable insights**, off
 
 ## Page Descriptions
 
+### Login & Signup Page
+
+**Purpose:** Provides secure user authentication, account creation, and session management to access the Phynix platform.
+
+![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Login.png)
+
+![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Signup.png)
+
+Key Features & Technical Details:
+
+**Login**:
+
+
+Users log in via email and password using Supabase authentication.
+
+Session tokens (access_token / refresh_token) are stored in st.session_state for secure navigation.
+
+Email format validation and error handling ensures smooth authentication.
+
+
+**Signup**:
+
+New users can create an account with username, email, and password.
+
+Password confirmation and whitespace checks enforce basic security standards.
+
+Supabase signup includes storing display_name and inserting credentials into the user_credentials table.
+
+Users are prompted to verify their email, with guidance for handling spam or delays.
+
+**UI & UX**:
+
+Tab-based interface separating Login and Signup forms.
+
+Responsive form layout constrained for readability and alignment.
+
+Error messages and validation feedback are provided inline for better user experience.
+
+Placeholder sections for future Google OAuth integration.
+
+**Workflow Example**:
+
+User enters email and password → clicks Login → session stored → redirected to Chat page.
+
+New user enters username, email, password, confirms password → clicks Verify Your Email → account created → credentials stored → verification instructions displayed.
+---
+
+
 ### Chat Page
 
 **Purpose:** Core interaction interface with Ashva, enabling users to express emotions and receive context-aware support.  
