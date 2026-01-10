@@ -1,6 +1,12 @@
 # Phynix: AI-Powered Mental Health Chatbot Platform (BERT + OLLAMA)
 
+**🔗 Live Demo:** [https://phynix.streamlit.app/](https://phynix.streamlit.app/)
+
+
+
 Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized guidance. The heart of the system is **Ashva**, now enhanced with **BERT for emotion detection** and **OLLAMA for smoother, context-aware responses**, creating a hybrid GenAI workflow for improved conversational support.
+
+
 
 This platform is **multi-page**, **multi-layered**, and production-ready, combining a sophisticated frontend, AI/NLP backend, and relational database analytics.
 
@@ -147,7 +153,7 @@ The platform emphasizes **privacy, data security, and actionable insights**, off
 - **Streamlit Cloud** or local deployment via:  
 ```bash
 
-streamlit run Chat.py
+streamlit run  Logout.py
 ```
 ### Future Enhancements
 
