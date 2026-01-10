@@ -1,6 +1,6 @@
-# Phynix: AI-Powered Mental Health Chatbot Platform
+# Phynix: AI-Powered Mental Health Chatbot Platform (BERT + OLLAMA)
 
-Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized guidance. The heart of the system is **Ashva**, a BERT-powered chatbot that predicts user emotions, evaluates risk and confidence levels, and provides supportive responses.  
+Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized guidance. The heart of the system is **Ashva**, now enhanced with **BERT for emotion detection** and **OLLAMA for smoother, context-aware responses**, creating a hybrid GenAI workflow for improved conversational support.
 
 This platform is **multi-page**, **multi-layered**, and production-ready, combining a sophisticated frontend, AI/NLP backend, and relational database analytics.
 
@@ -10,6 +10,7 @@ This platform is **multi-page**, **multi-layered**, and production-ready, combin
 
 - [Overview](#overview)  
 - [Page Descriptions](#page-descriptions)  
+  - [Login & Signup Page](#login--signup-page)  
   - [Chat Page](#chat-page)  
   - [Home Page](#home-page)  
   - [Mood Journal Page](#mood-journal-page)  
@@ -26,9 +27,9 @@ This platform is **multi-page**, **multi-layered**, and production-ready, combin
 
 Phynix serves as a **digital mental health companion**, combining:  
 
-- **Conversational AI** with real-time emotion recognition  
-- **Analytics & dashboards** to visualize emotional trends, confidence, and risk levels  
-- **Private journaling** for personal reflection  
+- **Hybrid Conversational AI**: Emotion detection via BERT, response generation via OLLAMA for fluent and empathetic interactions.  
+- **Analytics & Dashboards**: Track emotional trends, risk levels, and confidence metrics over time.  
+- **Private Journaling**: Secure mood journaling for personal reflection.  
 
 The platform emphasizes **privacy, data security, and actionable insights**, offering a mental refuge for individuals dealing with stress, anxiety, or depression.
 
@@ -40,152 +41,86 @@ The platform emphasizes **privacy, data security, and actionable insights**, off
 
 **Purpose:** Provides secure user authentication, account creation, and session management to access the Phynix platform.
 
-![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Login.png)
+![Login](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Login.png)
 
-![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Signup.png)
+![Signup](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Signup.png)
 
-Key Features & Technical Details:
+**Key Features & Technical Details:**
 
-**Login**:
+- **Login:** Users authenticate via Supabase; session tokens stored securely.  
+- **Signup:** Collects username, email, password; validates input; stores credentials in PostgreSQL.  
+- **UI & UX:** Tab-based, responsive forms with inline error messages and validation feedback.  
+- **Workflow:** Login → session storage → Chat page; Signup → email verification → Chat page.
 
-
-Users log in via email and password using Supabase authentication.
-
-Session tokens (access_token / refresh_token) are stored in st.session_state for secure navigation.
-
-Email format validation and error handling ensures smooth authentication.
-
-
-**Signup**:
-
-New users can create an account with username, email, and password.
-
-Password confirmation and whitespace checks enforce basic security standards.
-
-Supabase signup includes storing display_name and inserting credentials into the user_credentials table.
-
-Users are prompted to verify their email, with guidance for handling spam or delays.
-
-**UI & UX**:
-
-Tab-based interface separating Login and Signup forms.
-
-Responsive form layout constrained for readability and alignment.
-
-Error messages and validation feedback are provided inline for better user experience.
-
-Placeholder sections for future Google OAuth integration.
-
-**Workflow Example**:
-
-User enters email and password → clicks Login → session stored → redirected to Chat page.
-
-New user enters username, email, password, confirms password → clicks Verify Your Email → account created → credentials stored → verification instructions displayed.
 ---
-
 
 ### Chat Page
 
-**Purpose:** Core interaction interface with Ashva, enabling users to express emotions and receive context-aware support.  
+**Purpose:** Core interaction interface with Ashva, enabling users to express emotions and receive context-aware, empathetic support.
 
-  ![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/a4c386cbf01e77109956934c15b14f8402244c04/Site%20Images/Phynix_Chat_Interface_UI.png)
+![Chat](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/a4c386cbf01e77109956934c15b14f8402244c04/Site%20Images/Phynix_Chat_Interface_UI.png)
 
 **Key Features & Technical Details:**  
 - **Dynamic Chat Interface:**  
-  - User and bot messages rendered in styled chat bubbles using custom CSS.  
-  - Message history maintained via `st.session_state` for session persistence.  
+  - Styled chat bubbles for user and bot messages.  
+  - Maintains history via `st.session_state` for session persistence.  
 - **Emotion & Risk Analysis:**  
-  - User inputs processed by a BERT-based model predicting one of seven emotions.  
+  - BERT predicts one of seven emotions; OLLAMA generates context-aware responses.  
   - Risk levels and confidence scores calculated and displayed with emoji indicators.  
 - **Database Integration:**  
-  - Supabase/PostgreSQL tables (`user_data`) store messages, predicted emotions, risk, confidence, and chatbot replies.  
-  - Session-safe insertion with error handling and API-level validations.  
-- **Session Management:**  
-  - Authentication via Supabase tokens (`access_token` / `refresh_token`).  
-  - Graceful redirection to login/logout pages for invalid or expired sessions.  
+  - Supabase/PostgreSQL stores messages, predicted emotions, risk, confidence, and bot replies.  
 - **UX Enhancements:**  
-  - Dynamic greeting for first-time chat or empty history.  
-  - Analysis collapsible block showing emotion and risk after each message.  
-  - “New Chat” button resets conversation safely without losing authentication context.  
+  - Collapsible analysis block after each message.  
+  - “New Chat” button resets conversation safely.
 
 ---
 
 ### Home Page
 
-**Purpose:** Central dashboard offering insights, metrics, and daily motivational guidance.  
-![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_1.png)
-![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_2.png)
+**Purpose:** Central dashboard offering insights, metrics, and daily motivational guidance.
+
+![Home1](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_1.png)  
+![Home2](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_2.png)
+
 **Key Features & Technical Details:**  
-- **Dashboard & Metrics:**  
-  - Charts displaying emotion trends, confidence levels, and risk progression using historical chat data.  
-  - Pulls analytics from PostgreSQL for personalized insights.  
-- **Daily Advice / Motivation:**  
-  - Randomized motivational quotes displayed with custom CSS styling.  
-  - Ashva insights provide context-specific recommendations based on past interactions.  
-- **Navigation & Interaction:**  
-  - “Begin Your Journey” button links to Chat page for immediate interaction.  
-  - Session-safe retrieval of messages ensures metrics remain consistent across pages.  
-- **UX Enhancements:**  
-  - Animated welcome messages, styled quote boxes, and responsive multi-column layout.  
-  - Centralized, visually prominent calls-to-action to encourage engagement.
- 
-  
+- Dashboard charts for emotion trends, confidence levels, and risk progression.  
+- Personalized advice and motivational quotes.  
+- Session-safe retrieval ensures consistent metrics across pages.  
+
 ---
 
 ### Mood Journal Page
 
-**Purpose:** Private and secure journaling space for users to log reflections and track emotional well-being.  
+**Purpose:** Private journaling space for users to log reflections and track emotional well-being.
 
-![image_alt](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Mood_journal.png)
+![Mood Journal](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Mood_journal.png)
 
 **Key Features & Technical Details:**  
-- **Profile Management:**  
-  - Displays user profile image, verified badge, username, and editable bio.  
-  - Profile edits and bio updates saved in PostgreSQL.  
-- **Journal Entries:**  
-  - Secure private entries maintained per user.  
-  - New entry button (under development) for structured diary input.  
-- **Session & Security:**  
-  - Authentication enforced via Supabase tokens.  
-  - User session isolation ensures only authorized access to private entries.  
-- **UX Enhancements:**  
-  - Streamlit column layout for profile image, actions, and journal sections.  
-  - Custom CSS for image styling, buttons, and card-like UI components.
+- Profile management with editable bio and verified badge.  
+- Secure, private journal entries per user.  
+- Authentication enforced via Supabase tokens.  
+- Streamlit column layout with custom CSS for cards and buttons.
 
 ---
 
 ## Backend Architecture
 
-- **Supabase Authentication:**  
-  - Manages user login/signup with secure token-based sessions.  
-  - PostgreSQL stores `user_credentials` table with emails and usernames.  
-
-- **PostgreSQL Data Layer:**  
-  - `user_data` table tracks chat messages, predicted emotions, risk, confidence, and Ashva replies.  
-  - Separate tables for mood journal entries, profile information, and historical analytics.  
-  - Designed for multi-user scalability and secure storage.  
-
+- **Supabase Authentication:** Manages login/signup with secure token-based sessions.  
+- **PostgreSQL Data Layer:** Stores `user_data` (messages, emotions, risk, confidence, replies), mood journal entries, and profile info.  
 - **Data Flow:**  
   1. User input → Streamlit frontend  
-  2. Emotion predicted via BERT model → Ashva response generated  
-  3. Messages, emotions, and analytics stored in PostgreSQL via Supabase API  
-  4. Dashboard metrics and advice dynamically retrieved from backend  
+  2. BERT predicts emotion → OLLAMA generates response  
+  3. Messages and analytics stored in PostgreSQL  
+  4. Dashboard retrieves metrics dynamically
 
 ---
 
 ## AI & NLP Layer
 
-- **BERT-based Emotion Classification:**  
-  - Input text classified into one of seven emotions.  
-  - Optimized for conversational sentiment analysis.  
-
-- **Ashva Response Logic:**  
-  - Responses generated dynamically based on predicted emotion and context.  
-  - Risk and confidence levels computed from predicted emotion category.  
-
-- **Integration:**  
-  - Prediction triggered on message submission.  
-  - Results saved in PostgreSQL and rendered dynamically in the chat UI.  
+- **BERT-based Emotion Classification:** Classifies input into seven emotion categories.  
+- **OLLAMA Response Generation:** Produces fluent, empathetic responses based on context and emotion.  
+- **Structured Outputs:** JSON schemas with deduplication and validation.  
+- **Integration:** Predictions triggered on message submission and rendered in chat UI.
 
 ---
 
@@ -193,23 +128,33 @@ New user enters username, email, password, confirms password → clicks Verify Y
 
 - **Streamlit Multi-Page App:** Chat, Home, Mood Journal.  
 - **Dynamic UI Elements:** Chat bubbles, collapsible analysis, progress charts, motivational quotes.  
-- **Custom CSS Styling:** Buttons, chat bubbles, cards, animation effects.  
-- **Responsive Layout:** Multi-column design for dashboards and profile pages.  
+- **Custom CSS Styling:** Buttons, cards, animations.  
+- **Responsive Layout:** Multi-column design for dashboards and profile pages.
 
 ---
 
 ## Technologies Used
 
-- **Frontend:** Streamlit, HTML/CSS for custom UI  
+- **Frontend:** Streamlit, HTML/CSS  
 - **Backend:** Supabase, PostgreSQL  
-- **Machine Learning:** Python, BERT (emotion classification)  
-- **Visualization:** Streamlit charts, custom progress bars  
+- **Machine Learning:** Python, BERT (emotion classification), OLLAMA (response generation)  
+- **Visualization:** Streamlit charts, custom progress bars
 
 ---
 
 ## Deployment
 
-- **Streamlit Cloud** or **local deployment** via:  
+- **Streamlit Cloud** or local deployment via:  
 ```bash
-streamlit run Chat.py
 
+streamlit run Chat.py
+```
+### Future Enhancements
+
+Databricks / MLflow logging for experiments
+
+Documentation & code cleanup
+
+Optional Dockerization & batch endpoints for production
+
+Advanced multi-agent GenAI workflows for enriched conversational experience
