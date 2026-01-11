@@ -608,7 +608,7 @@ MIT License - See `LICENSE` file for details.
 **Suvroneel Nathak**  
 *AI/ML Engineer | Full-Stack Developer*
 
-📧 [Your Email]  
+📧 suvroneelnathak213@gmail.com
 🔗 [LinkedIn Profile]  
 💻 [GitHub Portfolio]  
 🌐 [Live Demo](https://phynix.streamlit.app/)
