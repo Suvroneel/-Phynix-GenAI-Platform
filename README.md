@@ -150,7 +150,7 @@ Data retrieved on Home page for analytics dashboard
 - **Response Validation:** JSON schema enforcement for structured OLLAMA outputs
 - **Analytics Tracking:** Every interaction logged for dashboard insights
 
-![Chat Interface](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/a4c386cbf01e77109956934c15b14f8402244c04/Site%20Images/Phynix_Chat_Interface_UI.png)
+![Chat Interface](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Site%20Images/Phynix_Chat_Interface_UI_2.png)
 
 **UX Enhancements:**
 - Collapsible analysis panel showing emotion breakdown
