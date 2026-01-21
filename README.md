@@ -24,9 +24,11 @@ Production-grade mental health intervention platform combining **BERT-based emot
 
 ✅ **Real-Time Emotion Analysis** - 7-class emotion detection with confidence scoring  
 ✅ **Contextual AI Response System** - Therapeutic guidance adapted to emotional state  
+✅ **Intelligent Advice Engine** - Proactive mental wellness recommendations based on emotional patterns  
 ✅ **Mental Health Analytics Dashboard** - Longitudinal tracking of emotional patterns  
 ✅ **Secure Journaling Platform** - Private reflection space with PostgreSQL encryption  
-✅ **Risk Assessment Engine** - Automated flagging of high-risk emotional states
+✅ **Risk Assessment Engine** - Automated flagging of high-risk emotional states  
+🚧 **Voice Integration** *(In Development)* - Multimodal input/output for enhanced accessibility
 
 ---
 
@@ -40,7 +42,7 @@ Production-grade mental health intervention platform combining **BERT-based emot
 │  ┌────────────┐  ┌────────┐  ┌──────────────────┐  │
 │  │  Logout.py │  │ Chat   │  │  Home Dashboard  │  │
 │  │  (Login/   │  │ Page   │  │  & Mood Journal  │  │
-│  │  Signup)   │  │        │  │                  │  │
+│  │  Signup)   │  │ (🎤*)  │  │                  │  │
 │  └────────────┘  └────────┘  └──────────────────┘  │
 └─────────────────────────────────────────────────────┘
          ↓                    ↓                    ↓
@@ -52,15 +54,19 @@ Production-grade mental health intervention platform combining **BERT-based emot
 ┌────────────────────────────────────────────────────┐
 │          AI Processing Pipeline (Chat Only)        │
 │                                                     │
-│  User Message  →  BERT Emotion Classifier          │
-│                   (7 emotion categories)           │
+│  User Message  →  BERT Emotion Classifier ✅       │
+│  (Text/Voice*)     (7 emotion categories)          │
 │                          ↓                         │
 │                   Emotion + Confidence Score       │
 │                          ↓                         │
-│                   OLLAMA LLM                       │
+│                   OLLAMA LLM 🚧                    │
 │                   (Context-aware response)         │
+│                   *Optimizing emotion-tuned model  │
 │                          ↓                         │
 │                   Therapeutic Reply                │
+│                   (Text/Speech*)                   │
+│                                                     │
+│  ✅ = Production-ready  🚧 = In active development │
 └────────────────────────────────────────────────────┘
          ↓
 ┌────────────────────────────────────────────────────┐
@@ -76,7 +82,7 @@ Production-grade mental health intervention platform combining **BERT-based emot
 │  - Emotion distribution charts                     │
 │  - Confidence tracking over time                   │
 │  - Risk level progression                          │
-│  - Personalized insights                           │
+│  - AI-powered personalized insights & daily advice │
 └────────────────────────────────────────────────────┘
 ```
 
@@ -86,16 +92,23 @@ Production-grade mental health intervention platform combining **BERT-based emot
 - **Streamlit:** Multi-page web application framework
 - **Custom CSS/HTML:** Enhanced UI components and responsive design
 - **Session Management:** State persistence across page navigation
+- 🚧 **Voice Module** *(In Development):* Speech recognition and text-to-speech integration
 
 **AI & NLP Infrastructure:**
-- **BERT (Transformers):** Fine-tuned emotion classification model
+- **BERT (Transformers):** Fine-tuned emotion classification model ✅
   - Architecture: `bert-base-uncased` with custom classification head
   - Training: 7-class emotion dataset (joy, sadness, anger, fear, surprise, disgust, neutral)
   - Performance: 89% accuracy, 0.87 F1-score (macro-average)
-- **OLLAMA:** Context-aware response generation
+  - **Status:** Production-ready, stable inference
+- **OLLAMA:** Context-aware response generation 🚧
   - Model: Llama-based conversational AI
   - Integration: Local inference with structured output parsing
   - Response time: <2 seconds for 200-token outputs
+  - **Status:** Active optimization - exploring emotion-tuned Llama models for enhanced empathy and therapeutic accuracy
+- 🚧 **Speech Processing** *(In Development):*
+  - Input: Whisper/SpeechRecognition for voice-to-text transcription
+  - Output: pyttsx3/TTS for text-to-speech responses
+  - Integration point: Chat page multimodal interface (voice button + audio playback)
 
 **Backend & Data:**
 - **Supabase:** Authentication, PostgreSQL database, real-time subscriptions
@@ -115,23 +128,25 @@ Production-grade mental health intervention platform combining **BERT-based emot
 
 **Functionality:**
 - Real-time chat interface with persistent conversation history
-- Dual AI processing: Emotion detection → Context-aware response generation
+- Dual AI processing: Emotion detection (BERT ✅) → Context-aware response generation (OLLAMA 🚧)
 - Visual feedback via emotion indicators and confidence meters
+- 🚧 **Voice input/output integration in active development** - enabling hands-free interaction and accessibility for users who prefer speaking over typing
 
 **Technical Implementation:**
 ```python
-# Actual workflow from your codebase
+# Current production workflow (BERT is stable ✅)
 User types message in Chat page
          ↓
-BERT model predicts emotion (joy/sadness/anger/fear/surprise/disgust/neutral)
+BERT model predicts emotion (joy/sadness/anger/fear/surprise/disgust/neutral) ✅
          ↓
 Confidence score calculated
          ↓
 Risk level assigned based on emotion
          ↓
-Message + emotion + confidence passed to OLLAMA
+Message + emotion + confidence passed to OLLAMA 🚧
          ↓
 OLLAMA generates therapeutic response with context
+(Currently optimizing emotion-awareness for better empathy)
          ↓
 All data stored in PostgreSQL user_data table:
   - user_message
@@ -142,6 +157,13 @@ All data stored in PostgreSQL user_data table:
   - timestamp
          ↓
 Data retrieved on Home page for analytics dashboard
+
+# 🚧 Upcoming: Voice-enabled workflow
+User clicks 🎤 → Speaks → Whisper/SpeechRecognition transcribes → Same BERT pipeline ✅
+                                                                          ↓
+                                                          OLLAMA response generated 🚧
+                                                                          ↓
+                                                    Text displayed + Optional TTS playback
 ```
 
 **Key Features:**
@@ -149,6 +171,7 @@ Data retrieved on Home page for analytics dashboard
 - **Risk Assessment:** Automated flagging based on emotion combinations (e.g., sadness + anger = elevated risk)
 - **Response Validation:** JSON schema enforcement for structured OLLAMA outputs
 - **Analytics Tracking:** Every interaction logged for dashboard insights
+- 🚧 **Multimodal Interaction** *(Coming Soon):* Toggle between text and voice input seamlessly
 
 ![Chat Interface](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/Suvroneel-patch-1/Site%20Images/Site%20Images/Phynix_Chat_Interface_UI_2.png)
 
@@ -157,12 +180,13 @@ Data retrieved on Home page for analytics dashboard
 - "New Chat" functionality with safe session reset
 - Typing indicators and smooth message animations
 - Mobile-responsive chat bubbles
+- 🚧 Voice UI controls (mic button, speech waveform visualization) in development
 
 ---
 
 ### 2. Mental Health Analytics Dashboard
 
-**Purpose:** Provide users with longitudinal insights into emotional patterns, risk trends, and mental health trajectory.
+**Purpose:** Provide users with longitudinal insights into emotional patterns, risk trends, and mental health trajectory with AI-powered personalized recommendations.
 
 ![Dashboard 1](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_1.png)
 ![Dashboard 2](https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot/blob/6d5cd83a7bfa73ad670949ac791646df8c842ced/Site%20Images/Home_2.png)
@@ -194,10 +218,41 @@ Metrics Displayed:
 - Engagement frequency (messages per day)
 ```
 
-**Personalized Recommendations:**
-- AI-generated daily motivational quotes
-- Therapeutic activity suggestions based on emotion patterns
-- Resource links for professional help when high-risk detected
+**Intelligent Advice Engine:**
+
+Phynix doesn't just respond reactively—it proactively supports your mental wellness journey through personalized, AI-driven guidance:
+
+- **Real-time Emotional Guidance:** Context-aware recommendations triggered by detected emotions during chat conversations
+  - **Example (Anger):** When BERT detects anger, Ashva immediately suggests: *"I notice you're feeling angry right now. Try taking 5 deep breaths - inhale for 4 counts, hold for 4, exhale for 6. This activates your parasympathetic nervous system to help you calm down. Would you like to talk about what's triggering this feeling?"*
+  - **Example (Sadness):** When detecting sadness: *"When feeling down, small actions matter. Consider reaching out to a friend, taking a 10-minute walk in sunlight, or journaling about one positive thing today. These micro-actions can shift your mood incrementally."*
+  - **Example (Anxiety/Fear):** *"I sense you're feeling anxious. Ground yourself with the 5-4-3-2-1 technique: Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste. This brings you back to the present moment."*
+
+- **Daily Personalized Tips:** Curated mental health advice on the Home Dashboard based on user's emotional history and patterns over the past 7-14 days
+  - **Pattern Recognition:** If analytics show recurring late-night anxiety, Phynix suggests: *"Your data shows elevated stress in evenings. Consider a wind-down routine: no screens 1 hour before bed, light stretching, or calming tea. Sleep hygiene directly impacts mental resilience."*
+  - **Social Connection Nudges:** For periods showing isolation indicators: *"You've had fewer positive social emotions lately. Research shows brief social interactions (even a 5-minute call) significantly boost mood. Who could you reach out to today?"*
+  - **Activity Suggestions:** Based on emotion stagnation: *"Your emotional range has been narrow this week. Try something novel—a new recipe, a different walking route, or a 10-minute creative activity. Novel experiences trigger dopamine release."*
+
+- **Proactive Wellness Nudges:** Ashva actively promotes mental health throughout the day
+  - **Morning Motivation:** *"Good morning! Today's focus: One thing you're grateful for + one small goal. Starting your day with intention improves emotional regulation by 40% (source: positive psychology research)."*
+  - **Mindfulness Reminders:** *"It's been 3 hours—time for a 2-minute breathing break. Mindfulness reduces cortisol and improves focus. Try box breathing: inhale 4, hold 4, exhale 4, hold 4."*
+  - **Progress Celebrations:** *"You've completed 7 days of consistent check-ins! Your anxiety scores have decreased 18%. This consistency is building emotional resilience—keep going!"*
+
+- **Evidence-Based Therapeutic Techniques:** Recommendations rooted in CBT, DBT, and positive psychology
+  - **Cognitive Restructuring (CBT):** When detecting negative thought patterns: *"I notice catastrophic thinking in your message. Let's challenge that: What's the evidence for this thought? What's an alternative explanation? What would you tell a friend in this situation?"*
+  - **Emotion Regulation (DBT):** For emotional overwhelm: *"Try the TIPP skill: Temperature (cold water on face), Intense exercise (30 jumping jacks), Paced breathing, Paired muscle relaxation. This calms your nervous system fast."*
+  - **Gratitude Practices:** For low mood patterns: *"Your analytics show persistent low mood. Try the 3 Good Things exercise: Each night, write 3 positive moments from your day (even tiny ones). This rewires your brain's negativity bias over 3 weeks."*
+
+**Technical Implementation:**
+```python
+# Advice generation pipeline
+Emotion detected in real-time (Chat page) → Immediate contextual advice
+         ↓
+Historical data analyzed (Home page load) → Daily personalized tips
+         ↓
+Pattern detection (weekly cron job) → Proactive wellness nudges
+         ↓
+All recommendations logged for effectiveness tracking
+```
 
 ---
 
@@ -263,13 +318,14 @@ User writes journal entry → Validate session token
 
 ## AI Model Performance
 
-### BERT Emotion Classification
+### BERT Emotion Classification ✅
 
 **Training Details:**
 - **Dataset:** 25,000+ labeled mental health conversations
 - **Architecture:** `bert-base-uncased` + 7-class softmax classifier
 - **Fine-tuning:** 3 epochs with learning rate 2e-5
 - **Hardware:** Trained on NVIDIA T4 GPU (4 hours)
+- **Status:** Production-stable, delivering consistent 89%+ accuracy
 
 **Performance Metrics:**
 ```
@@ -292,15 +348,15 @@ Macro-Average F1-Score: 0.87
 - Batch processing: Supports up to 32 concurrent requests
 - Model size: 420MB (quantized for deployment)
 
-### OLLAMA Response Generation
+### OLLAMA Response Generation 🚧
 
-**Configuration:**
+**Current Configuration:**
 - **Model:** Llama-based (7B parameters)
 - **Prompt Engineering:** Therapeutic conversation template with emotion-aware context injection
 - **Output Structure:** JSON schema with `{response, empathy_score, follow_up_questions}`
 - **Safety Filters:** Content moderation to prevent harmful advice
 
-**Response Quality:**
+**Response Quality (Current):**
 ```
 Human Evaluation (n=200 conversations):
 - Empathy Rating:        4.2/5.0
@@ -313,6 +369,12 @@ Automated Metrics:
 - Perplexity:      18.3
 - Response Length: 80-150 tokens (optimal engagement)
 ```
+
+**Active Optimization:**
+- Experimenting with emotion-specific fine-tuning datasets
+- Testing Llama models with mental health domain adaptation
+- Target: Improve empathy rating to 4.7/5.0 and therapeutic value to 4.5/5.0
+- ETA for optimized model: Q1 2026
 
 ---
 
@@ -328,8 +390,8 @@ Streamlit Frontend (input capture)
 Authentication Check (Supabase)
       ↓
 AI Processing Layer
-  ├─ BERT Emotion Classification
-  └─ OLLAMA Response Generation
+  ├─ BERT Emotion Classification ✅
+  └─ OLLAMA Response Generation 🚧
       ↓
 Database Write (PostgreSQL)
   ├─ user_data table (conversations)
@@ -339,6 +401,8 @@ Database Write (PostgreSQL)
 Dashboard Retrieval (on Home page load)
       ↓
 Visualization Rendering (Streamlit charts)
+      ↓
+Intelligent Advice Generation (based on patterns)
 ```
 
 ### Database Design
@@ -387,7 +451,7 @@ BERT_MODEL_PATH=./models/bert_emotion_classifier
 
 **Current Metrics:**
 - **Page Load Time:** <2 seconds (cached assets)
-- **AI Response Latency:** <2 seconds (BERT + OLLAMA combined)
+- **AI Response Latency:** <2 seconds (BERT ✅ + OLLAMA 🚧 combined)
 - **Database Query Time:** <100ms (indexed queries)
 - **Uptime:** 99.2% (last 90 days)
 
@@ -411,6 +475,7 @@ BERT_MODEL_PATH=./models/bert_emotion_classifier
 - Conversations per user per day
 - Emotion classification distribution
 - Model inference latency (p50, p95, p99)
+- Advice engagement rate (clicks, time spent)
 ```
 
 ---
@@ -418,8 +483,10 @@ BERT_MODEL_PATH=./models/bert_emotion_classifier
 ## Product Roadmap
 
 ### Phase 1: Core Enhancements (Q1 2026)
+- [x] BERT emotion classification (production-ready ✅)
+- [ ] OLLAMA emotion-tuning optimization (in progress 🚧)
+- [ ] Voice input/output for accessibility (in development 🚧)
 - [ ] Multi-language support (Spanish, Hindi, Mandarin)
-- [ ] Voice input/output for accessibility
 - [ ] Mobile app (React Native wrapper)
 - [ ] Enhanced risk assessment (integration with PHQ-9, GAD-7 scales)
 
@@ -476,8 +543,8 @@ Preliminary Results:
 ```
 ├── Logout.py                        # Main entry (Login/Signup page)
 ├── pages/
-│   ├── Chat.py                      # AI chatbot interface (BERT + OLLAMA)
-│   ├── Home.py                      # Analytics dashboard
+│   ├── Chat.py                      # AI chatbot interface (BERT ✅ + OLLAMA 🚧)
+│   ├── Home.py                      # Analytics dashboard + Intelligent Advice
 │   └── Mood_Journal.py              # Private journaling
 ├── Functions/                       # Helper functions
 ├── Utils/                           # Utility modules
@@ -554,6 +621,8 @@ bandit -r .
 
 **We welcome contributions!** Areas of focus:
 - Additional emotion categories (e.g., guilt, shame, hope)
+- OLLAMA emotion-tuning optimization (currently in progress)
+- Voice module integration (speech recognition + TTS)
 - Multilingual model training
 - Accessibility improvements (WCAG 2.1 AA compliance)
 - Performance optimization (query caching, model quantization)
@@ -574,15 +643,18 @@ bandit -r .
 - Prompt engineering for LLM-based response generation
 - Model evaluation and performance optimization
 - Handling imbalanced datasets (emotion classes)
+- Ongoing model improvement (OLLAMA emotion-tuning)
 
 **Full-Stack Development:**
 - Multi-page web application architecture (Streamlit)
 - RESTful API integration (Supabase, OLLAMA)
 - Database design and query optimization (PostgreSQL)
 - User authentication and session management
+- Real-time data visualization and analytics
 
 **Product & Analytics:**
 - User behavior tracking and dashboard design
+- Intelligent recommendation systems (advice engine)
 - A/B testing framework for UI/UX improvements
 - KPI definition and monitoring (DAU, engagement, satisfaction)
 - Data-driven feature prioritization
@@ -592,6 +664,7 @@ bandit -r .
 - Therapeutic conversation flow engineering
 - Risk assessment protocol development
 - HIPAA compliance and data privacy
+- Evidence-based therapeutic techniques (CBT, DBT)
 
 ---
 
@@ -608,9 +681,9 @@ MIT License - See `LICENSE` file for details.
 **Suvroneel Nathak**  
 *AI/ML Engineer | Full-Stack Developer*
 
-📧 suvroneelnathak213@gmail.com
-🔗 [LinkedIn Profile]  
-💻 [GitHub Portfolio]  
+📧 suvroneelnathak213@gmail.com  
+🔗 [LinkedIn Profile](https://www.linkedin.com/in/suvroneel-nathak/)  
+💻 [GitHub Portfolio](https://github.com/Suvroneel/)  
 🌐 [Live Demo](https://phynix.streamlit.app/)
 
 ---
