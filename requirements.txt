@@ -21,3 +21,4 @@ plotly>=5.0.0
 # Backend / DB
 supabase>=2.0.0
 postgrest>=0.10.6
+
