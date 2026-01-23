@@ -1,10 +1,23 @@
-transformers>=4.30.0
+# Core ML / NLP
 torch>=2.0.0
+transformers>=4.30.0
+openai-whisper>=20231117          # NEW
+
+# Audio processing (Whisper dependency)
+pydub>=0.25.1                     # NEW
+ffmpeg-python>=0.2.0              # NEW
+
+# Web app
 streamlit>=1.28.0
-pandas>=1.5.0
+streamlit-audiorecorder>=0.0.6    # NEW
+streamlit-option-menu>=0.3.6
+
+# Data & ML utilities
 numpy>=1.21.0
+pandas>=1.5.0
 scikit-learn>=1.0.0
-supabase
-postgrest
-streamlit-option-menu
-plotly
+plotly>=5.0.0
+
+# Backend / DB
+supabase>=2.0.0
+postgrest>=0.10.6
