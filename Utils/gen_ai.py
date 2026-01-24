@@ -138,3 +138,33 @@ class PhynixAI:
     def is_token_configured(self):
         """Check if HF token is configured"""
         return self.hf_token is not None
+
+
+
+"""
+=== WHAT THIS FILE DOES ===
+
+This is the GenAI backend for Phynix that replaces hard-coded responses with AI-generated replies.
+
+KEY COMPONENTS:
+1. PhynixAI class - Main AI interface
+2. 5 Hugging Face models - Llama, Mistral, Zephyr, Phi, Gemma (user can switch)
+3. Mental health system prompt - Makes AI respond empathetically
+4. Emotion context integration - AI knows user's emotion + risk level from BERT
+
+HOW IT WORKS:
+- User message + BERT emotion + risk level → GenAI model
+- AI generates personalized, context-aware response (not random template!)
+- Returns empathetic reply that matches user's emotional state
+
+WHY WE USE THIS:
+- Fluid, natural conversations instead of repetitive hard-coded replies
+- AI adjusts tone based on emotion (more caring for sadness, upbeat for joy)
+- Each response is unique and contextual
+- Maintains conversation history for coherent dialogue
+
+INTEGRATION:
+- Called by chat_genai.py after BERT detects emotion
+- Works with or without HF token (token gives better rate limits)
+- Handles errors gracefully with user-friendly fallback messages
+"""
