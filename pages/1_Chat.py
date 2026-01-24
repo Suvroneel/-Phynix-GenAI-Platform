@@ -202,10 +202,10 @@ with col_two:
         </style>
     """, unsafe_allow_html=True)
 
-    if new_chat:
-        st.session_state.messages = []
-        st.session_state.message_submitted = False
-        st.rerun()
+if new_chat:
+    st.session_state.messages = []
+    st.session_state.message_submitted = False
+    st.rerun()
 col1, col2 = st.columns([1, 4])
 with col1:
     st.image('images/sigmund-ljJDx95-6gE-unsplash.png', use_container_width=True, width=100)
