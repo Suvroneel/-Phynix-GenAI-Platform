@@ -245,9 +245,9 @@ elif len(st.session_state.messages) == 0:
     display_welcome_message(st.session_state["username"], st.session_state["user_email"])
 
 # Model selector - ABOVE chat input
-col_model1, col_model2, col_model3 = st.columns([1, 2, 1])
+col_model1, col_model2 = st.columns([4,1])
 
-with col_model1:
+with col_model2:
     # Model selection dropdown
     model_info = st.session_state.phynix_ai.get_model_info()
     current_model_key = [k for k, v in st.session_state.phynix_ai.available_models.items() 
