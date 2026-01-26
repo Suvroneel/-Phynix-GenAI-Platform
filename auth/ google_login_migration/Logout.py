@@ -1,4 +1,3 @@
-from streamlit_supabase_auth import login_form
 import streamlit as st
 import re
 from Utils import title
@@ -212,8 +211,49 @@ def create_account(email, password, username):
     except Exception as e:
         st.error(f"Signup failed: {e}")
 
+# Username setup dialog for new Google users
+@st.dialog("Welcome to Phynix! 🎉")
+def setup_username_dialog():
+    st.write(f"**Email:** {st.session_state['user_email']}")
+    st.write("")
+    st.write("What should we call you?")
+    
+    suggested_username = st.session_state["user_email"].split("@")[0]
+    new_username = st.text_input(
+        "Username (no spaces):",
+        value=suggested_username,
+        key="google_username_dialog"
+    )
+    
+    col1, col2 = st.columns(2)
+    with col2:
+        if st.button("Continue", use_container_width=True, type="primary"):
+            if not new_username:
+                st.error("Please enter a username")
+            elif " " in new_username:
+                st.error("Username cannot contain spaces")
+            else:
+                # Insert into user_credentials
+                try:
+                    response = supabase_service.table('user_credentials').select('user_id', count='exact').execute()
+                    row_count = response.count if response.count is not None else 0
+                    new_user_id = row_count + 1
+                    
+                    supabase_service.table('user_credentials').insert({
+                        'user_id': new_user_id,
+                        'email': st.session_state["user_email"],
+                        'user_name': new_username,
+                    }).execute()
+                    
+                    st.session_state["username"] = new_username
+                    st.session_state["username_set"] = True
+                    st.rerun()
+                    
+                except Exception as e:
+                    st.error(f"Setup failed: {str(e)}")
+
 # Main UI
-tab1, tab2 = st.tabs(["🔐 Login", "📝 Signup"])
+tab1, tab2 = st.tabs(["Login", "Signup"])
 
 # Login Form
 with tab1:
@@ -252,81 +292,52 @@ with tab2:
             else:
                 create_account(new_email, new_password, new_username)
 
+#st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
 # ===== GOOGLE LOGIN BUTTON (BELOW TABS) =====
 
 
-# Google OAuth button
-session = login_form(
-    url=st.secrets["SUPABASE_URL"],
-    apiKey=st.secrets["SUPABASE_KEY"],
-    providers=["google"],
-)
+# Just a simple Google button (no form)
+if st.button("Continue with Google", use_container_width=True, key="google_signin_btn"):
+    try:
+        # Get OAuth URL
+        response = supabase.auth.sign_in_with_oauth({
+            "provider": "google",
+            "options": {
+                "redirect_to": st.secrets["auth"]["redirect_local_url"]
+            }
+        })
+        
+        # Redirect to Google
+        st.markdown(f'<meta http-equiv="refresh" content="0;url={response.url}">', unsafe_allow_html=True)
+        st.info("🔄 Redirecting to Google...")
+    except Exception as e:
+        st.error(f"Error: {str(e)}")
 
-# Handle Google login
-if session:
-    st.session_state["access_token"] = session.get("access_token")
-    st.session_state["refresh_token"] = session.get("refresh_token")
-    st.session_state["user_email"] = session.get("user", {}).get("email")
-    st.session_state["logged_in"] = True
-    
-    # Check if user exists in user_credentials
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Handle Google OAuth callback session
+if "access_token" in st.session_state and "user_email" in st.session_state and st.session_state.get("logged_in"):
+    # Check if user exists
     try:
         existing = supabase_service.table('user_credentials').select('user_name').eq('email', st.session_state["user_email"]).execute()
         
         if existing.data:
-            # Existing user - get their username and go to chat
+            # Existing user - go to chat
             st.session_state["username"] = existing.data[0]['user_name']
             st.success(f"✅ Welcome back, {st.session_state['username']}!")
             st.switch_page("pages/1_Chat.py")
         else:
-            # New user - need to set username
-            st.success("✅ Google authentication successful!")
-            st.subheader("One more step...")
-            st.info(f"Email: {st.session_state['user_email']}")
-            
-            # Username input for new users
-            suggested_username = st.session_state["user_email"].split("@")[0]
-            new_username = st.text_input(
-                "Choose a username (no spaces):",
-                value=suggested_username,
-                key="google_username_input"
-            )
-            
-            if st.button("Complete Setup", use_container_width=True):
-                if not new_username:
-                    st.error("Please enter a username")
-                elif " " in new_username:
-                    st.error("Username cannot contain spaces")
-                else:
-                    # Insert into user_credentials
-                    try:
-                        response = supabase_service.table('user_credentials').select('user_id', count='exact').execute()
-                        row_count = response.count if response.count is not None else 0
-                        new_user_id = row_count + 1
-                        
-                        supabase_service.table('user_credentials').insert({
-                            'user_id': new_user_id,
-                            'email': st.session_state["user_email"],
-                            'user_name': new_username,
-                        }).execute()
-                        
-                        st.session_state["username"] = new_username
-                        st.success(f"✅ Account created! Welcome, {new_username}!")
-                        st.balloons()
-                        st.switch_page("pages/1_Chat.py")
-                        
-                    except Exception as e:
-                        st.error(f"Setup failed: {str(e)}")
-            
-            st.stop()  # Stop here until username is set
-            
+            # New user - show username dialog
+            if not st.session_state.get("username_set"):
+                setup_username_dialog()
+            else:
+                st.success(f"✅ Welcome, {st.session_state['username']}!")
+                st.balloons()
+                st.switch_page("pages/1_Chat.py")
     except Exception as e:
-        st.error(f"Error checking user: {str(e)}")
-        st.stop()
+        st.error(f"Error: {str(e)}")
 
-st.markdown("</div>", unsafe_allow_html=True)
-st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
 st.write("Please reload if you see any errors or bugs")
 render_footer()
