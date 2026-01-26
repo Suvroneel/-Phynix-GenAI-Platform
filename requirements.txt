@@ -6,6 +6,7 @@ transformers>=4.30.0
 # Web app
 streamlit>=1.28.0
 streamlit-audiorecorder>=0.0.6    # NEW
+
 streamlit-option-menu>=0.3.6
 audio-recorder-streamlit
 # Data & ML utilities
@@ -18,3 +19,6 @@ plotly>=5.0.0
 supabase>=2.0.0
 postgrest>=0.10.6
 
+
+#Auth
+streamlit-supabase-auth
