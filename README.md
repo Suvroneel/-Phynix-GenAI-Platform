@@ -11,6 +11,7 @@ This platform is **multi-page**, **multi-layered**, and production-ready, combin
 ## Table of Contents
 
 - [Overview](#overview)
+- [Project Structure](#project-structure)
 - [Page Descriptions](#page-descriptions)
   - [Login & Signup Page](#login--signup-page)
   - [Chat Page](#chat-page)
@@ -35,6 +36,76 @@ Phynix serves as a **digital mental health companion**, combining:
 - **Private Journaling**: Secure mood journaling for personal reflection and mental health tracking
 
 The platform emphasizes **privacy, data security, and actionable insights**, offering a mental refuge for individuals dealing with stress, anxiety, or depression.
+
+---
+
+## 📁 Project Structure
+
+```
+Phynix-Mental-Health-Chatbot/
+├── Logout.py                        # Main entry point & authentication
+├── requirements.txt                 # Python dependencies
+├── Dockerfile                       # Docker configuration
+├── README.md                        # Documentation
+├── .gitignore                       # Git ignore rules
+├── .gitattributes                   # Git attributes
+├── history.png                      # Project history image
+│
+├── pages/                           # Streamlit pages
+│   ├── 1_Chat.py                   # Chat interface with Ashva
+│   ├── 2_Home.py                   # Analytics dashboard
+│   └── 3_Mood Journal.py           # Mood journaling
+│
+├── Utils/                           # Core utilities
+│   ├── ashva.py                    # AI orchestration
+│   ├── model.py                    # BERT emotion classification
+│   ├── gen_ai.py                   # Generative AI integration
+│   ├── database.py                 # Database operations
+│   ├── config.py                   # Configuration
+│   ├── reply.py                    # Response generation
+│   ├── emotion_responses.py        # Emotion templates
+│   ├── advice.py                   # Advice generation
+│   ├── personality.py              # AI personality
+│   ├── profile.py                  # User profiles
+│   ├── Progression_Chart.py        # Analytics charts
+│   ├── sidebar.py                  # Sidebar components
+│   ├── footer.py                   # Footer components
+│   ├── title.py                    # Title utilities
+│   ├── Website_Title.py            # Title config
+│   ├── Otp_verification.py         # OTP system
+│   ├── Automated_Messages.py       # Auto messages
+│   ├── feedback.py                 # Feedback system
+│   └── __init__.py
+│
+├── auth/                            # Authentication
+│   └── google_login_migration/
+│       ├── Logout.py
+│       └── README.md
+│
+├── SQL/                             # Database schemas
+│   └── user_data_rows.sql
+│
+├── Functions/                       # Helper functions
+│   └── title.py
+│
+├── images/                          # Static assets
+│   ├── default.png
+│   ├── logo-black&white.png
+│   ├── sigmund-ljJDx95-6gE-unsplash.png
+│   ├── icons/                      # Favicons
+│   └── profiles/                   # Profile avatars
+│
+├── Lottie/                          # Animations
+│   └── Animation - 1750949119838.json
+│
+├── favicon_io/                      # Favicon files
+│
+├── Site Images/                     # Screenshots
+│
+├── Old versions/                    # Legacy code
+│
+└── .idea/                           # IDE config
+```
 
 ---
 
