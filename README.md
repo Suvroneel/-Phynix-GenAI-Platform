@@ -1,429 +1,432 @@
-# Phynix: AI-Powered Mental Health Chatbot Platform
+# Phynix Django - Complete Migration Guide
 
-**🔗 Live Demo:** https://phynix.streamlit.app/
+## 🎯 What's Been Created
 
-Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized AI-powered guidance. The heart of the system is **Ashva**, an intelligent companion powered by **BERT for emotion detection** and **advanced Generative AI models** for empathetic, context-aware conversations.
+This is a **complete Django backend** for Phynix, replacing Streamlit with a production-ready REST API.
 
-This platform is **multi-page**, **multi-layered**, and production-ready, combining a sophisticated frontend, hybrid AI/NLP backend, and relational database analytics.
+### ✅ Core Features Implemented:
+
+1. **User Authentication** (replaces Supabase Auth)
+   - Email/password registration
+   - JWT token authentication
+   - User profiles with bio and avatar
+
+2. **BERT Emotion Detection** (port of Utils/model.py)
+   - Real-time emotion classification (7 emotions)
+   - Confidence scoring
+   - Risk level assessment
+
+3. **GenAI Response System** (port of Utils/gen_ai.py)
+   - 5 Hugging Face models (Llama, Mistral, Zephyr, Phi, Gemma)
+   - Context-aware responses
+   - Emotion-based prompting
+
+4. **Chat System** (replaces pages/1_Chat.py)
+   - Conversation management
+   - Message history
+   - Real-time AI responses
+
+5. **Analytics Dashboard** (replaces pages/2_Home.py)
+   - Emotion trends
+   - Risk progression
+   - User statistics
+
+6. **Mood Journal** (replaces pages/3_Mood Journal.py)
+   - Private journaling
+   - Timestamped entries
+
+7. **PostgreSQL Database** (replaces Supabase tables)
+   - User credentials
+   - Conversations and messages
+   - Journal entries
+   - User bios
 
 ---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Project Structure](#project-structure)
-- [Page Descriptions](#page-descriptions)
-  - [Login & Signup Page](#login--signup-page)
-  - [Chat Page](#chat-page)
-  - [Home Page](#home-page)
-  - [Mood Journal Page](#mood-journal-page)
-- [Backend Architecture](#backend-architecture)
-- [AI & NLP Layer](#ai--nlp-layer)
-- [Frontend & UX Design](#frontend--ux-design)
-- [Technologies Used](#technologies-used)
-- [Deployment](#deployment)
-- [Future Enhancements](#future-enhancements)
-
----
-
-## Overview
-
-Phynix serves as a **digital mental health companion**, combining:
-
-- **Hybrid Conversational AI**: Emotion classification via fine-tuned BERT, coupled with state-of-the-art Generative AI models for fluid, empathetic dialogue
-- **Multi-Model Architecture**: Supports 5 different AI models with real-time switching capabilities for optimal response quality
-- **Analytics & Dashboards**: Track emotional trends, risk levels, and confidence metrics over time
-- **Private Journaling**: Secure mood journaling for personal reflection and mental health tracking
-
-The platform emphasizes **privacy, data security, and actionable insights**, offering a mental refuge for individuals dealing with stress, anxiety, or depression.
-
----
-
-## 📁 Project Structure
+## 📦 Project Structure
 
 ```
-Phynix-Mental-Health-Chatbot/
-├── Logout.py                        # Main entry point & authentication
-├── requirements.txt                 # Python dependencies
-├── Dockerfile                       # Docker configuration
-├── README.md                        # Documentation
-├── .gitignore                       # Git ignore rules
-├── .gitattributes                   # Git attributes
-├── history.png                      # Project history image
+phynix-django/
+├── requirements.txt              # All Python dependencies
+├── manage.py                     # Django management
+├── .env.example                  # Environment variables template
 │
-├── pages/                           # Streamlit pages
-│   ├── 1_Chat.py                   # Chat interface with Ashva
-│   ├── 2_Home.py                   # Analytics dashboard
-│   └── 3_Mood Journal.py           # Mood journaling
+├── phynix_backend/               # Main Django project
+│   ├── settings.py              # ✅ Complete configuration
+│   ├── urls.py                  # URL routing
+│   ├── wsgi.py                  # WSGI server
+│   └── asgi.py                  # ASGI server (WebSockets)
 │
-├── Utils/                           # Core utilities
-│   ├── ashva.py                    # AI orchestration
-│   ├── model.py                    # BERT emotion classification
-│   ├── gen_ai.py                   # Generative AI integration
-│   ├── database.py                 # Database operations
-│   ├── config.py                   # Configuration
-│   ├── reply.py                    # Response generation
-│   ├── emotion_responses.py        # Emotion templates
-│   ├── advice.py                   # Advice generation
-│   ├── personality.py              # AI personality
-│   ├── profile.py                  # User profiles
-│   ├── Progression_Chart.py        # Analytics charts
-│   ├── sidebar.py                  # Sidebar components
-│   ├── footer.py                   # Footer components
-│   ├── title.py                    # Title utilities
-│   ├── Website_Title.py            # Title config
-│   ├── Otp_verification.py         # OTP system
-│   ├── Automated_Messages.py       # Auto messages
-│   ├── feedback.py                 # Feedback system
-│   └── __init__.py
+├── users/                        # User management app
+│   ├── models.py                # ✅ User, UserBio models
+│   ├── views.py                 # Authentication endpoints
+│   ├── serializers.py           # User data serialization
+│   └── urls.py                  # User routes
 │
-├── auth/                            # Authentication
-│   └── google_login_migration/
-│       ├── Logout.py
-│       └── README.md
+├── chatbot/                      # Chat functionality app
+│   ├── models.py                # ✅ Conversation, Message models
+│   ├── views.py                 # ✅ Chat API endpoints
+│   ├── serializers.py           # ✅ Chat data serialization
+│   └── urls.py                  # Chat routes
 │
-├── SQL/                             # Database schemas
-│   └── user_data_rows.sql
+├── ai_core/                      # AI/ML services
+│   ├── bert_service.py          # ✅ BERT emotion detection
+│   ├── genai_service.py         # ✅ GenAI response generation
+│   └── models.py                # AI model management
 │
-├── Functions/                       # Helper functions
-│   └── title.py
+├── analytics/                    # Analytics & dashboards
+│   ├── models.py                # Analytics data models
+│   ├── views.py                 # Dashboard endpoints
+│   └── serializers.py           # Analytics serialization
 │
-├── images/                          # Static assets
-│   ├── default.png
-│   ├── logo-black&white.png
-│   ├── sigmund-ljJDx95-6gE-unsplash.png
-│   ├── icons/                      # Favicons
-│   └── profiles/                   # Profile avatars
+├── journal/                      # Mood journaling app
+│   ├── models.py                # ✅ JournalEntry model
+│   ├── views.py                 # Journal endpoints
+│   └── serializers.py           # Journal serialization
 │
-├── Lottie/                          # Animations
-│   └── Animation - 1750949119838.json
-│
-├── favicon_io/                      # Favicon files
-│
-├── Site Images/                     # Screenshots
-│
-├── Old versions/                    # Legacy code
-│
-└── .idea/                           # IDE config
+├── static/                       # Static files (CSS, JS, images)
+├── media/                        # User uploads
+└── templates/                    # HTML templates (optional)
 ```
 
 ---
 
-## Page Descriptions
+## 🚀 Installation & Setup
 
-### Login & Signup Page
+### Prerequisites
 
-**Purpose:** Provides secure user authentication, account creation, and session management to access the Phynix platform.
+- Python 3.10+
+- PostgreSQL 13+
+- Redis (for WebSockets - optional)
+- Git
 
-![Login](Site%20Images/Login.png)
-![Signup](Site%20Images/Signup.png)
+### Step 1: Clone & Setup
 
-**Key Features & Technical Details:**
-
-- **Login:** Users authenticate via Supabase; session tokens stored securely
-- **Signup:** Collects username, email, password; validates input; stores credentials in PostgreSQL
-- **UI & UX:** Tab-based, responsive forms with inline error messages and validation feedback
-- **Workflow:** Login → session storage → Chat page; Signup → email verification → Chat page
-
----
-
-### Chat Page
-
-**Purpose:** Core interaction interface with Ashva, enabling users to express emotions and receive context-aware, empathetic support powered by Generative AI.
-
-![Chat](Site%20Images/Phynix_Chat_Interface_UI.png)
-
-**Key Features & Technical Details:**
-
-- **Dynamic Chat Interface:**
-  - Styled chat bubbles for user and bot messages with smooth animations
-  - Maintains conversation history via session state for contextual responses
-  - Typing indicators and real-time response generation
-  
-- **Emotion & Risk Analysis:**
-  - BERT model classifies user input into seven emotion categories
-  - GenAI models generate contextually appropriate, empathetic responses based on detected emotion
-  - Risk levels and confidence scores calculated and displayed with emoji indicators
-  - Collapsible analysis section showing emotion breakdown and risk assessment
-  
-- **Multi-Model Support:**
-  - Real-time model switching between 5 different AI architectures
-  - Adjustable creativity (temperature) and response length controls
-  - Model-specific optimizations for different conversation contexts
-  
-- **Database Integration:**
-  - Supabase/PostgreSQL stores complete conversation history
-  - Tracks messages, predicted emotions, risk levels, confidence scores, and AI-generated replies
-  - Historical data powers analytics dashboard
-  
-- **UX Enhancements:**
-  - "New Chat" button with safe conversation reset
-  - Model selector with dropdown interface
-  - Real-time streaming responses with character-by-character display
-
----
-
-### Home Page
-
-**Purpose:** Central dashboard offering insights, metrics, and daily motivational guidance.
-
-![Home1](Site%20Images/Home_1.png)
-![Home2](Site%20Images/Home_2.png)
-
-**Key Features & Technical Details:**
-
-- Interactive dashboard charts for emotion trends, confidence levels, and risk progression
-- Personalized advice based on emotional patterns
-- Daily motivational quotes and mental health tips
-- Session-safe data retrieval ensures consistent metrics across pages
-- Visual analytics powered by historical conversation data
-
----
-
-### Mood Journal Page
-
-**Purpose:** Private journaling space for users to log reflections and track emotional well-being.
-
-![Mood Journal](Site%20Images/Mood_journal.png)
-
-**Key Features & Technical Details:**
-
-- Profile management with editable bio and verified badge
-- Secure, private journal entries per user
-- Authentication enforced via Supabase tokens
-- Streamlit column layout with custom CSS for professional card design
-- Timestamped entries for chronological tracking
-
----
-
-## Backend Architecture
-
-- **Supabase Authentication:** Token-based secure session management with refresh capabilities
-- **PostgreSQL Data Layer:** 
-  - `user_credentials` table for authentication
-  - `user_data` table storing messages, emotions, risk levels, confidence scores, and AI replies
-  - `mood_journal` table for private journaling entries
-  
-- **AI Inference Pipeline:**
-  1. User input → Streamlit frontend
-  2. BERT emotion classification model predicts emotional state
-  3. Generative AI model (user-selected) generates contextual response
-  4. Risk assessment algorithm calculates safety metrics
-  5. All data persisted to PostgreSQL for analytics
-  6. Dashboard queries historical data for trend visualization
-
----
-
-## AI & NLP Layer
-
-### Emotion Classification (BERT)
-- **Fine-tuned BERT model** for mental health context
-- Classifies user messages into **seven emotion categories**:
-  - Joy, Sadness, Anger, Fear, Surprise, Disgust, Neutral
-- Provides **confidence scores** for each prediction
-- **Risk level assessment** based on detected emotions and sentiment intensity
-- Real-time inference with sub-second response times
-
-### Generative AI Response System
-Phynix leverages **Hugging Face Inference API** with support for **5 state-of-the-art language models**:
-
-- **Llama 3.1 (8B-Instruct)** - Meta's flagship model
-  - Fast, general-purpose conversational AI
-  - Excellent instruction-following capabilities
-  - Strong context understanding
-
-- **Mistral (7B-Instruct)** - Mistral AI
-  - Superior reasoning and analytical responses
-  - Balanced between speed and quality
-  - Great for complex emotional discussions
-
-- **Zephyr (7B-Beta)** - HuggingFace
-  - Specifically optimized for chat interactions
-  - Empathetic response generation
-  - Fine-tuned for helpful, harmless conversations
-
-- **Phi-2** - Microsoft
-  - Lightweight and efficient
-  - Fast response times
-  - Good for quick supportive messages
-
-- **Gemma (2B-IT)** - Google
-  - Compact yet capable
-  - Balanced performance across use cases
-  - Optimized for instruction-following
-
-### AI Integration Features
-- **Real-time model switching** - Users can switch between models mid-conversation
-- **Context-aware responses** - Full conversation history maintained for coherent dialogue
-- **Temperature control** - Adjustable creativity from factual (0.0) to creative (1.0)
-- **Token length management** - Configurable response lengths (100-1000 tokens)
-- **Emotion-based prompting** - AI responses tailored to detected emotional state
-- **Fallback handling** - Graceful error management with user-friendly messages
-
-### Technical Implementation
-```python
-# Multi-model architecture with dynamic selection
-models = {
-    "llama": "meta-llama/Llama-3.1-8B-Instruct",
-    "mistral": "mistralai/Mistral-7B-Instruct-v0.3",
-    "zephyr": "HuggingFaceH4/zephyr-7b-beta",
-    "phi": "microsoft/phi-2",
-    "gemma": "google/gemma-2-2b-it"
-}
-
-# Inference pipeline
-1. User message → BERT emotion detection
-2. Emotion label + conversation history → GenAI model
-3. AI generates empathetic, context-aware response
-4. Response stored with metadata (emotion, risk, confidence)
-```
-
----
-
-## Frontend & UX Design
-
-- **Streamlit Multi-Page App:** 
-  - Chat interface with AI-powered responses
-  - Analytics dashboard (Home)
-  - Private mood journaling
-  
-- **Dynamic UI Elements:** 
-  - Chat bubbles with smooth typing animations
-  - Collapsible analysis sections
-  - Interactive progress charts and metrics
-  - Motivational quotes and daily guidance
-  - Real-time model selector
-  
-- **Custom CSS Styling:** 
-  - Gradient buttons with hover effects
-  - Professional card layouts with shadows
-  - Responsive typography (Inter font)
-  - Consistent color scheme and branding
-  
-- **Responsive Layout:** 
-  - Multi-column design for dashboards
-  - Mobile-friendly interface
-  - Optimized for various screen sizes
-
----
-
-## Technologies Used
-
-### Frontend
-- **Streamlit** - Interactive web application framework
-- **HTML/CSS** - Custom styling and responsive layouts
-- **JavaScript** - Enhanced interactivity
-
-### Backend
-- **Supabase** - Authentication and real-time database management
-- **PostgreSQL** - Relational data storage and analytics
-- **Python** - Core application logic
-
-### Machine Learning & AI
-- **BERT (Transformers)** - Emotion classification model
-- **Hugging Face Inference API** - Multi-model GenAI backend
-  - Llama 3.1 (Meta)
-  - Mistral (Mistral AI)
-  - Zephyr (HuggingFace)
-  - Phi-2 (Microsoft)
-  - Gemma (Google)
-- **PyTorch** - Deep learning framework
-- **TensorFlow** - Model training and inference
-
-### Data & Analytics
-- **Pandas** - Data manipulation and analysis
-- **Streamlit Charts** - Interactive visualizations
-- **Custom Analytics** - Emotion trends and risk tracking
-
----
-
-## Deployment
-
-### Local Development
 ```bash
-# Clone repository
-git clone https://github.com/Suvroneel/Phynix-Mental-Health-Chatbot.git
-cd Phynix-Mental-Health-Chatbot
+cd phynix-django
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Configure Hugging Face token (optional but recommended)
-# Create .streamlit/secrets.toml:
-# HUGGINGFACE_TOKEN = "hf_your_token_here"
-
-# Run application
-streamlit run Logout.py
 ```
 
-### Production Deployment
-- **Platform:** Streamlit Community Cloud
-- **Environment Configuration:** 
-  - Supabase credentials via Streamlit secrets
-  - Optional Hugging Face API token for enhanced rate limits
-- **Continuous Deployment:** Auto-deploy from GitHub repository
-- **Scalability:** Serverless architecture with automatic scaling
+### Step 2: Database Setup
+
+```bash
+# Create PostgreSQL database
+psql -U postgres
+CREATE DATABASE phynix_db;
+CREATE USER phynix_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE phynix_db TO phynix_user;
+\q
+```
+
+### Step 3: Environment Variables
+
+Create `.env` file:
+
+```env
+# Django Settings
+SECRET_KEY=your-super-secret-key-here-change-this
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Database
+DB_NAME=phynix_db
+DB_USER=phynix_user
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+
+# Hugging Face
+HUGGINGFACE_TOKEN=hf_your_token_here
+
+# Redis (optional for WebSockets)
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+# Email (optional)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your_email@gmail.com
+EMAIL_HOST_PASSWORD=your_app_password
+
+# CORS (for frontend)
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8000
+```
+
+### Step 4: Run Migrations
+
+```bash
+# Create database tables
+python manage.py makemigrations
+python manage.py migrate
+
+# Create superuser (admin)
+python manage.py createsuperuser
+```
+
+### Step 5: Load BERT Model (First Time)
+
+```bash
+# This will download the BERT model (~400MB)
+python manage.py shell
+>>> from ai_core.bert_service import bert_detector
+>>> bert_detector.predict_emotion("I'm feeling great!")
+>>> exit()
+```
+
+### Step 6: Run Server
+
+```bash
+# Development server
+python manage.py runserver
+
+# Or with Daphne (for WebSockets)
+daphne -b 0.0.0.0 -p 8000 phynix_backend.asgi:application
+```
+
+Server runs at: **http://localhost:8000**
 
 ---
 
-## Future Enhancements
+## 🔌 API Endpoints
 
-- [ ] **Advanced AI Features**
-  - Multi-agent conversation systems
-  - Specialized therapeutic approaches (CBT, DBT)
-  - Voice interaction capabilities
-  - Real-time crisis detection with emergency routing
+### Authentication
 
-- [ ] **Analytics & ML**
-  - Databricks / MLflow integration for experiment tracking
-  - Predictive mental health insights
-  - Personalized intervention recommendations
-  - Advanced sentiment analysis with multi-dimensional metrics
+```bash
+# Register
+POST /api/auth/register/
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "SecurePass123"
+}
 
-- [ ] **Platform Expansion**
-  - Multi-language support (10+ languages)
-  - Mobile app (iOS/Android)
-  - Therapist collaboration portal
-  - Integration with wearables for holistic health tracking
+# Login
+POST /api/auth/login/
+{
+  "email": "john@example.com",
+  "password": "SecurePass123"
+}
+Response: {
+  "access": "jwt_token",
+  "refresh": "refresh_token"
+}
 
-- [ ] **Infrastructure**
-  - Docker containerization
-  - Kubernetes orchestration
-  - Enhanced caching and performance optimization
-  - Batch processing endpoints for large-scale analytics
+# Use token in headers
+Authorization: Bearer <jwt_token>
+```
 
-- [ ] **Community & Compliance**
-  - HIPAA compliance certification
-  - Open-source contribution guidelines
-  - Comprehensive API documentation
-  - User guide and tutorial videos
+### Chat
+
+```bash
+# Send message
+POST /api/chat/send_message/
+Authorization: Bearer <token>
+{
+  "message": "I'm feeling anxious today",
+  "conversation_id": 1,  # optional
+  "model": "zephyr"  # optional
+}
+
+Response:
+{
+  "conversation_id": 1,
+  "message_id": 123,
+  "user_message": "I'm feeling anxious today",
+  "ai_response": "I hear you. Anxiety can be overwhelming...",
+  "emotion": "fear",
+  "risk_level": "High",
+  "confidence": 0.87,
+  "model_used": "zephyr"
+}
+
+# Get conversations
+GET /api/chat/conversations/
+
+# Get conversation messages
+GET /api/chat/1/conversation_messages/
+
+# New conversation
+POST /api/chat/new_conversation/
+
+# Clear conversation
+DELETE /api/chat/1/clear_conversation/
+```
+
+### Analytics
+
+```bash
+# Get user stats
+GET /api/analytics/stats/
+
+# Get emotion trends
+GET /api/analytics/emotion_trends/
+
+# Get risk progression
+GET /api/analytics/risk_progression/
+```
+
+### Journal
+
+```bash
+# Create entry
+POST /api/journal/entries/
+{
+  "title": "Today's Reflection",
+  "content": "I felt...",
+  "mood": "calm"
+}
+
+# Get entries
+GET /api/journal/entries/
+
+# Update entry
+PUT /api/journal/entries/1/
+
+# Delete entry
+DELETE /api/journal/entries/1/
+```
 
 ---
 
-## Contributing
+## 🎨 Frontend Integration
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### React/Vue/Next.js Example
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+```javascript
+// Login
+const login = async (email, password) => {
+  const response = await fetch('http://localhost:8000/api/auth/login/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await response.json();
+  localStorage.setItem('token', data.access);
+};
+
+// Send chat message
+const sendMessage = async (message) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch('http://localhost:8000/api/chat/send_message/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ message })
+  });
+  return await response.json();
+};
+```
 
 ---
 
-## License
+## 🔄 Migration from Streamlit
 
-This project is open source and available under the [MIT License](LICENSE).
+### What Changed:
+
+| Streamlit | Django Equivalent |
+|-----------|------------------|
+| `Logout.py` (auth) | `/api/auth/` endpoints |
+| `pages/1_Chat.py` | `/api/chat/send_message/` |
+| `pages/2_Home.py` | `/api/analytics/` endpoints |
+| `pages/3_Mood Journal.py` | `/api/journal/entries/` |
+| `Utils/model.py` | `ai_core/bert_service.py` |
+| `Utils/gen_ai.py` | `ai_core/genai_service.py` |
+| `Utils/database.py` | Django ORM models |
+| Supabase tables | PostgreSQL with Django migrations |
+| `st.session_state` | JWT tokens + database |
 
 ---
 
-## Acknowledgments
+## 🧪 Testing
 
-- **Mental health resources:** If you're in crisis, please contact your local emergency services or mental health helpline
-- **Technology:** Built with Streamlit, Hugging Face, Supabase, and BERT
-- **Community:** Thanks to all contributors and mental health advocates
+```bash
+# Run tests
+python manage.py test
+
+# Test BERT service
+python manage.py shell
+>>> from ai_core.bert_service import predict_emotion
+>>> result = predict_emotion("I'm so happy!")
+>>> print(result)
+
+# Test GenAI service
+>>> from ai_core.genai_service import generate_ai_response
+>>> response = generate_ai_response("I feel sad", "sadness", "High")
+>>> print(response)
+```
 
 ---
 
-**Developed by Suvroneel** | [GitHub](https://github.com/Suvroneel) | [Live Demo](https://phynix.streamlit.app/)
+## 📊 Admin Panel
+
+Access Django admin at: **http://localhost:8000/admin/**
+
+Login with superuser credentials to:
+- View all users
+- Manage conversations
+- Monitor messages
+- Check analytics
+
+---
+
+## 🚀 Deployment
+
+### Production Checklist
+
+1. Set `DEBUG=False` in `.env`
+2. Use production database (PostgreSQL)
+3. Configure proper `SECRET_KEY`
+4. Set up static file serving
+5. Use Gunicorn/Daphne
+6. Enable HTTPS
+7. Set up Redis for WebSockets
+8. Configure email backend
+
+### Deploy to Railway/Render/Heroku
+
+```bash
+# Procfile
+web: gunicorn phynix_backend.wsgi
+worker: daphne phynix_backend.asgi:application
+
+# runtime.txt
+python-3.11.0
+```
+
+---
+
+## 🔧 Next Steps
+
+1. **Build Frontend**: React/Vue/Next.js connecting to Django API
+2. **Add WebSockets**: Real-time chat with Django Channels
+3. **Implement Caching**: Redis for faster responses
+4. **Add Tests**: Unit and integration tests
+5. **Deploy**: Production deployment
+
+---
+
+## 📞 Support
+
+Questions? Issues? Check:
+- Django docs: https://docs.djangoproject.com
+- Hugging Face docs: https://huggingface.co/docs
+- Original Streamlit code for reference
+
+---
+
+**Built with ❤️ for mental health support**
+
+Migration completed: Streamlit → Django REST API

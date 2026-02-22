@@ -1,22 +1,47 @@
-# Core ML / NLP
-torch>=2.0.0
-transformers>=4.30.0
-faster-whisper>=0.10.0
+# Django Core
+Django==5.0.1
+django-cors-headers==4.3.1
+djangorestframework==3.14.0
+django-environ==0.11.2
 
-# Web app
-streamlit>=1.28.0
-streamlit-option-menu>=0.3.6
-audio-recorder-streamlit>=0.0.5
+# Database
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
 
-# Data & ML utilities
-numpy>=1.21.0
-pandas>=1.5.0
-scikit-learn>=1.0.0
-plotly>=5.0.0
+# Authentication & Security
+djangorestframework-simplejwt==5.3.1
+django-allauth==0.57.0
 
-# Backend / DB
-supabase>=2.0.0
-postgrest>=0.10.6
+# WebSockets for real-time chat
+channels==4.0.0
+channels-redis==4.1.0
+daphne==4.0.0
 
-# Auth
-streamlit-supabase-auth
+# AI/ML - BERT Emotion Detection
+torch==2.1.0
+transformers==4.36.0
+
+# AI/ML - Generative AI
+huggingface-hub==0.20.0
+
+# Data Processing
+pandas==2.1.4
+numpy==1.26.2
+scikit-learn==1.3.2
+
+# PostgreSQL client
+supabase==2.3.0
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Production server
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Utilities
+Pillow==10.1.0
+python-dateutil==2.8.2
+
+# API Documentation
+drf-yasg==1.21.7
