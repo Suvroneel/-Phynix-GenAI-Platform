@@ -131,7 +131,7 @@ Phynix-Mental-Health-Chatbot/
 
 **Purpose:** Core interaction interface with Ashva, enabling users to express emotions and receive context-aware, empathetic support powered by Generative AI.
 
-![Chat](Site%20Images/Phynix_Chat_Interface_UI.png)
+![Chat](https://github.com/Suvroneel/Phynix-GenAI-Platform/blob/Suvroneel-patch-1/Site%20Images/Phynix_Genai_Chat.png?raw=true)
 
 **Key Features & Technical Details:**
 
