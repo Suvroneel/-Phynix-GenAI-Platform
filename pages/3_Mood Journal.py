@@ -7,6 +7,10 @@ from supabase import create_client, Client, ClientOptions
 
 from Utils.title import render_custom_header, render_custom_subheader
 
+#--------new------------
+from Utils.journal import fetch_today_entries, insert_entry
+from datetime import datetime
+
 # 1. Setup Supabase
 supabase_url = st.secrets['SUPABASE_URL']
 supabase_key = st.secrets['SUPABASE_KEY']
@@ -117,16 +121,45 @@ st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
 # 14. Settings section
 render_custom_header("Ashva Diaries")
-journal()
+
+import random
+from Utils.ashva import ashva_diary
+st.markdown(f"<p style='color:#888; font-size:14px;'>{random.choice(ashva_diary)}</p>", unsafe_allow_html=True)
+
+@st.dialog("Ashva Diaries")
+def new_entry_dialog():
+    entry_text = st.text_area("entry", placeholder="What's on your mind today?", height=180, max_chars=2000, label_visibility="collapsed")
+    if st.button("Save"):
+        if not entry_text.strip():
+            st.warning("Write something first.")
+            return
+        insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip())
+        st.rerun()
+
 colA, colB = st.columns([4, 1])
-
 with colB:
+    if st.button("New Entry", type="tertiary", icon=":material/draw:"):
+        new_entry_dialog()
 
-    new_entry = st.button("New Entry", type="tertiary",icon=":material/draw:")
+st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
-if new_entry:
-    st.info("Under development")
-
+for entry in fetch_today_entries(st.session_state["username"]):
+    try:
+        dt = datetime.fromisoformat(entry["created_at"]).strftime("%d %b %Y, %I:%M %p")
+    except:
+        dt = entry["created_at"]
+    st.markdown(f"""
+        <div style="
+            border-left: 3px solid #ff914d;
+            border-radius: 4px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            font-family: 'Inter', sans-serif;
+        ">
+            <p style="color:#ff914d; font-size:11px; margin:0 0 10px 0;">{dt}</p>
+            <p style="font-size:15px; line-height:1.7; margin:0;">{entry['entry']}</p>
+        </div>
+    """, unsafe_allow_html=True)
 # 13. Spacer
 st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
