@@ -43,6 +43,13 @@ def fetch_today_entries(user_name: str) -> list:
 
 def upload_image(user_name: str, file) -> str | None:
     try:
+        # Set session so RLS recognizes the user
+        if "access_token" in st.session_state and "refresh_token" in st.session_state:
+            supabase.auth.set_session(
+                st.session_state["access_token"],
+                st.session_state["refresh_token"]
+            )
+
         ext = file.name.split(".")[-1]
         path = f"{user_name}/{uuid.uuid4().hex}.{ext}"
         supabase.storage.from_(BUCKET).upload(
@@ -54,7 +61,6 @@ def upload_image(user_name: str, file) -> str | None:
     except Exception as e:
         st.error(f"Image upload failed: {e}")
         return None
-
 
 def insert_entry(user_name: str, user_email: str, entry_text: str, image_url: str = None) -> bool:
     try:
