@@ -8,9 +8,11 @@ from supabase import create_client, Client, ClientOptions
 from Utils.title import render_custom_header, render_custom_subheader
 
 #--------new------------
-from Utils.journal import fetch_today_entries, insert_entry
-from datetime import datetime
 
+from datetime import datetime
+from Utils.journal import fetch_today_entries, insert_entry, get_today_entry_count
+from zoneinfo import ZoneInfo
+IST = ZoneInfo("Asia/Kolkata")
 # 1. Setup Supabase
 supabase_url = st.secrets['SUPABASE_URL']
 supabase_key = st.secrets['SUPABASE_KEY']
@@ -121,31 +123,37 @@ st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
 # 14. Settings section
 render_custom_header("Ashva Diaries")
-
+#----------------------------------------------------
 import random
 from Utils.ashva import ashva_diary
-st.markdown(f"<p style='color:#888; font-size:14px;'>{random.choice(ashva_diary)}</p>", unsafe_allow_html=True)
 
-@st.dialog("Ashva Diaries")
-def new_entry_dialog():
-    entry_text = st.text_area("entry", placeholder="What's on your mind today?", height=180, max_chars=2000, label_visibility="collapsed")
-    if st.button("Save"):
-        if not entry_text.strip():
-            st.warning("Write something first.")
-            return
-        insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip())
-        st.rerun()
+if "journal_input_key" not in st.session_state:
+    st.session_state.journal_input_key = 0
+
+entry_text = st.text_area(
+    "entry",
+    placeholder=random.choice(ashva_diary),
+    height=180,
+    max_chars=2000,
+    label_visibility="collapsed",
+    key=f"journal_text_{st.session_state.journal_input_key}"
+)
 
 colA, colB = st.columns([4, 1])
 with colB:
-    if st.button("New Entry", type="tertiary", icon=":material/draw:"):
-        new_entry_dialog()
-
+    if st.button("Upload", icon=":material/draw:"):
+        if entry_text.strip():
+            insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip())
+            st.session_state.journal_input_key += 1
+            st.rerun()
+        else:
+            st.warning("Write something first.")
+#--------------------------------------------------------
 st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
 for entry in fetch_today_entries(st.session_state["username"]):
     try:
-        dt = datetime.fromisoformat(entry["created_at"]).strftime("%d %b %Y, %I:%M %p")
+        dt = datetime.fromisoformat(entry["created_at"]).astimezone(IST).strftime("%d %b %Y, %I:%M %p")
     except:
         dt = entry["created_at"]
     st.markdown(f"""
