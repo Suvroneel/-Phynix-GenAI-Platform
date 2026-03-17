@@ -184,7 +184,7 @@ Phynix-Mental-Health-Chatbot/
 
 **Purpose:** Private journaling space for users to log reflections and track emotional well-being.
 
-![Mood Journal]([Site%20Images/Mood_journal.png](https://github.com/Suvroneel/Phynix-GenAI-Platform/blob/Suvroneel-patch-1/Site%20Images/Ashva_diary.png))
+![Mood Journal](https://github.com/Suvroneel/Phynix-GenAI-Platform/blob/Suvroneel-patch-1/Site%20Images/Ashva_diary.png)
 
 **Key Features & Technical Details:**
 
