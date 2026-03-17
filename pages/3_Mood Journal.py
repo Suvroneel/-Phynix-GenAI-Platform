@@ -1,3 +1,4 @@
+from Utils.journal import fetch_today_entries, insert_entry, get_today_entry_count, upload_image
 import streamlit as st
 from Utils import Progression_Chart
 from Utils.ashva import journal
@@ -139,11 +140,18 @@ entry_text = st.text_area(
     key=f"journal_text_{st.session_state.journal_input_key}"
 )
 
+uploaded_file = st.file_uploader(
+    "Add a photo (optional)",
+    type=["jpg", "jpeg", "png", "webp"],
+    key=f"journal_image_{st.session_state.journal_input_key}"
+)
+
 colA, colB = st.columns([4, 1])
 with colB:
     if st.button("Upload", icon=":material/draw:"):
         if entry_text.strip():
-            insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip())
+            image_url = upload_image(st.session_state["username"], uploaded_file) if uploaded_file else None
+            insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip(), image_url)
             st.session_state.journal_input_key += 1
             st.rerun()
         else:
@@ -156,6 +164,10 @@ for entry in fetch_today_entries(st.session_state["username"]):
         dt = datetime.fromisoformat(entry["created_at"]).astimezone(IST).strftime("%d %b %Y, %I:%M %p")
     except:
         dt = entry["created_at"]
+
+    image_html = f'<img src="{entry["image_url"]}" style="width:100%; border-radius:8px; margin-top:12px; object-fit:cover; max-height:300px;">' if entry.get(
+        "image_url") else ""
+
     st.markdown(f"""
         <div style="
             border-left: 3px solid #ff914d;
@@ -166,6 +178,7 @@ for entry in fetch_today_entries(st.session_state["username"]):
         ">
             <p style="color:#ff914d; font-size:11px; margin:0 0 10px 0;">{dt}</p>
             <p style="font-size:15px; line-height:1.7; margin:0;">{entry['entry']}</p>
+            {image_html}
         </div>
     """, unsafe_allow_html=True)
 # 13. Spacer
