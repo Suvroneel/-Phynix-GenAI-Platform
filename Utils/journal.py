@@ -1,5 +1,6 @@
 from supabase import create_client, Client, ClientOptions
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import streamlit as st
 import uuid
 
@@ -8,12 +9,13 @@ supabase_key = st.secrets['SUPABASE_KEY']
 supabase: Client = create_client(supabase_url, supabase_key, options=ClientOptions(postgrest_client_timeout=60))
 
 BUCKET = "journal-images"
+IST = ZoneInfo("Asia/Kolkata")
 
 
 def get_today_entry_count(user_name: str) -> int:
-    today_midnight = datetime.now().replace(
+    today_midnight = datetime.now(IST).replace(
         hour=0, minute=0, second=0, microsecond=0
-    ).astimezone(timezone.utc).isoformat()
+    ).isoformat()
 
     response = supabase.table("mood_journal") \
         .select("id", count="exact") \
@@ -25,9 +27,9 @@ def get_today_entry_count(user_name: str) -> int:
 
 
 def fetch_today_entries(user_name: str) -> list:
-    today_midnight = datetime.now().replace(
+    today_midnight = datetime.now(IST).replace(
         hour=0, minute=0, second=0, microsecond=0
-    ).astimezone(timezone.utc).isoformat()
+    ).isoformat()
 
     response = supabase.table("mood_journal") \
         .select("*") \
