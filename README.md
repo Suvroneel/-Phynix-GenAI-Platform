@@ -10,10 +10,10 @@ This platform is **multi-page**, **multi-layered**, and production-ready, combin
 
 ## 🆕 Recent Updates
 
-### v1.2 — Ashva Diaries (Mood Journal) — March 2026
+### v2.1.1 — Ashva Diaries (Mood Journal) — March 2026
 Replaced the static placeholder with a fully functional journaling feature. Users can write daily reflections, optionally attach an image, and view today's entries as timestamped cards. Entries are stored in Supabase PostgreSQL with images in a dedicated Supabase Storage bucket. Fresh slate every day at midnight IST. Built with privacy-first design — no mood tagging, no sentiment analysis, just open reflection.
 
-### v1.1 — Multi-Model GenAI Backend
+### v2.0 — Multi-Model GenAI Backend
 Replaced static hard-coded responses with a live multi-model GenAI backend. Ashva now generates dynamic, context-aware empathetic responses using 5 LLMs (Llama 3.1, Mistral 7B, Zephyr 7B, Phi-2, Gemma 2B) via Hugging Face Inference API. Users can switch models in real-time mid-conversation.
 
 ---
