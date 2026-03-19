@@ -93,6 +93,26 @@ def render_custom_header(header_text):
     # Default Streamlit divider
     st.divider()
 
+
+
+def render_custom_header2(header_text):
+    st.markdown("""
+        <style>
+            .ashva-divider {
+                font-family: 'Inter', sans-serif;
+                font-size: 30px;
+                font-weight: 500;
+                color: var(--text-color);
+                margin-bottom: -8px;
+                margin-top: 0px;
+                padding-top: 0px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+
+    st.divider()
+
 def render_custom_subheader(header_text):
     st.markdown("""
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
