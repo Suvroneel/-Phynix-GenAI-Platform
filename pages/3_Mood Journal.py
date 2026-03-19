@@ -120,7 +120,7 @@ st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 if st.button("Update bio", icon=":material/draw:"):
     update_profile(st.session_state["username"])
 
-st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
 
 # 14. Settings section
 render_custom_header("Ashva Diaries")
@@ -146,8 +146,12 @@ uploaded_file = st.file_uploader(
     key=f"journal_image_{st.session_state.journal_input_key}"
 )
 
-colA, colB = st.columns([4, 1])
+colA, colB, colC = st.columns([3, 1, 1])
 with colB:
+    if st.button("Clear", icon=":material/refresh:", type="tertiary"):
+        st.session_state.journal_input_key += 1
+        st.rerun()
+with colC:
     if st.button("Upload", icon=":material/draw:"):
         if entry_text.strip():
             image_url = upload_image(st.session_state["username"], uploaded_file) if uploaded_file else None
@@ -165,7 +169,7 @@ for entry in fetch_today_entries(st.session_state["username"]):
     except:
         dt = entry["created_at"]
 
-    image_html = f'<img src="{entry["image_url"]}" style="width:100%; border-radius:8px; margin-top:12px; object-fit:cover; max-height:300px;">' if entry.get(
+    image_html = f'<img src="{entry["image_url"]}" style="width:100%; border-radius:8px; margin-top:12px; object-fit:contain; max-height:300px;">' if entry.get(
         "image_url") else ""
 
     st.markdown(f"""
