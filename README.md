@@ -1,4 +1,4 @@
-# Phynix: AI-Powered Mental Health Chatbot Platform
+# Phynix: Mood Based GenAi Platform
 
 **🔗 Live Demo:** https://phynix.streamlit.app/
 
