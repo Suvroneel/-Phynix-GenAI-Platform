@@ -1,25 +1,22 @@
 from Utils.journal import fetch_today_entries, insert_entry, get_today_entry_count, upload_image
 import streamlit as st
-from Utils import Progression_Chart
-from Utils.ashva import journal
 from Utils.profile import prof_change, update_profile, profile_name, show_bio
 from Utils.sidebar import render_sidebar_logo
 from supabase import create_client, Client, ClientOptions
-
-from Utils.title import render_custom_header, render_custom_subheader
-
-#--------new------------
-
+from Utils.title import render_custom_header, render_custom_subheader, render_custom_header2
 from datetime import datetime
-from Utils.journal import fetch_today_entries, insert_entry, get_today_entry_count
 from zoneinfo import ZoneInfo
+import random
+from Utils.ashva import ashva_diary
+
 IST = ZoneInfo("Asia/Kolkata")
+
 # 1. Setup Supabase
 supabase_url = st.secrets['SUPABASE_URL']
 supabase_key = st.secrets['SUPABASE_KEY']
 supabase: Client = create_client(supabase_url, supabase_key, options=ClientOptions(postgrest_client_timeout=60))
 
-# button
+# Button CSS
 st.markdown("""
         <style>
             .stButton > button {
@@ -34,7 +31,6 @@ st.markdown("""
                 transition: 0.3s ease;
                 box-shadow: 0 4px 14px rgba(255, 110, 64, 0.3);
             }
-
             .stButton > button:hover {
                 background: linear-gradient(90deg, #ff6e40, #ff914d);
                 box-shadow: 0 6px 18px rgba(255, 110, 64, 0.45);
@@ -58,28 +54,19 @@ if "user_email" not in st.session_state:
     st.error("You are not logged in. Redirecting to login...")
     st.switch_page("Logout.py")
 
-# button
-
-
-# 3. Custom CSS for image and button styling
+# 3. Custom CSS
 st.markdown("""
     <style>
-    /* Style the image to look like a wallpaper/profile */
     .stImage > img {
         max-width: 100%;
-        max-height: 400px; /* Adjust height for wallpaper feel */
-        width: 100%; /* Fill container width */
-        object-fit: cover; /* Scale image to cover the area */
-        border-radius: 10px; /* Rounded corners for profile style */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        max-height: 400px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         display: block;
         margin-left: auto;
         margin-right: auto;
-    }
-    /* Target button font size specifically */
-    .stButton > button.st-emotion-cache-13lcgu3 {
-        font-size: 9px !important; /* Set font size to 9px */
-        padding: 4px 8px !important; /* Adjust padding for smaller button */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -87,50 +74,40 @@ st.markdown("""
 # 4. Render sidebar logo
 render_sidebar_logo()
 
-
-
-# 7. Initialize session state for profile image if not already set
+# Initialize session state
 if 'profile_image' not in st.session_state:
-    st.session_state.profile_image = "images/profiles/profile1.png"  # Default image path
-
-
-# 8. Main layout for profile display
-col1, col2 = st.columns([4, 1])  # Adjust column widths to push button to the right
-with col1:
-    st.image(st.session_state.profile_image, width=200)  # Display selected profile image
-    profile_name(st.session_state["username"])
-    badge = st.badge("Verified ✔", color="green")
-
-with col2:
-    if st.button("Edit Profile", icon=":material/draw:"):
-        prof_change()
-
-# 9. Spacer
-st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
-
-# 10. About section
-show_bio(user_name=st.session_state["username"])
-
-st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
-
-
-# 11. Define the dialog function for updating profile description
-
-# 12. Update profile button
-if st.button("Update bio", icon=":material/draw:"):
-    update_profile(st.session_state["username"])
-
-st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
-
-# 14. Settings section
-render_custom_header("Ashva Diaries")
-#----------------------------------------------------
-import random
-from Utils.ashva import ashva_diary
+    st.session_state.profile_image = "images/profiles/profile1.png"
 
 if "journal_input_key" not in st.session_state:
     st.session_state.journal_input_key = 0
 
+if "show_entries" not in st.session_state:
+    st.session_state.show_entries = True
+
+# 8. Profile display
+col1, col2 = st.columns([4, 1])
+with col1:
+    st.image(st.session_state.profile_image, width=200)
+    profile_name(st.session_state["username"])
+    badge = st.badge("Verified ✔", color="green")
+with col2:
+    if st.button("Edit Profile", icon=":material/draw:"):
+        prof_change()
+
+st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+
+show_bio(user_name=st.session_state["username"])
+
+st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+
+if st.button("Update bio", icon=":material/draw:"):
+    update_profile(st.session_state["username"])
+
+st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
+
+render_custom_header("Ashva Diaries")
+
+#----------------------------------------------------
 entry_text = st.text_area(
     "entry",
     placeholder=random.choice(ashva_diary),
@@ -146,57 +123,58 @@ uploaded_file = st.file_uploader(
     key=f"journal_image_{st.session_state.journal_input_key}"
 )
 
-colA, colB, colC = st.columns([3, 1, 1])
+colA, colB = st.columns([4, 1])
 with colB:
-    if st.button("Clear", icon=":material/refresh:", type="tertiary"):
-        st.session_state.journal_input_key += 1
-        st.rerun()
-with colC:
-    if st.button("Upload", icon=":material/draw:"):
+    if st.button("Upload", icon=":material/draw:", key="upload_btn"):
         if entry_text.strip():
             image_url = upload_image(st.session_state["username"], uploaded_file) if uploaded_file else None
             insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip(), image_url)
             st.session_state.journal_input_key += 1
+            st.session_state.show_entries = True
             st.rerun()
         else:
             st.warning("Write something first.")
+
+render_custom_header2("")
+
+colabc, colxyz = st.columns([4, 1])
+with colxyz:
+    if st.button("Clear", icon=":material/refresh:", type="tertiary", key="clear_btn"):
+        st.session_state.show_entries = False
+        st.rerun()
 #--------------------------------------------------------
-st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
-for entry in fetch_today_entries(st.session_state["username"]):
-    try:
-        dt = datetime.fromisoformat(entry["created_at"]).astimezone(IST).strftime("%d %b %Y, %I:%M %p")
-    except:
-        dt = entry["created_at"]
+if st.session_state.show_entries:
+    for entry in fetch_today_entries(st.session_state["username"]):
+        try:
+            dt = datetime.fromisoformat(entry["created_at"]).astimezone(IST).strftime("%d %b %Y, %I:%M %p")
+        except:
+            dt = entry["created_at"]
 
-    image_html = f'<img src="{entry["image_url"]}" style="width:100%; border-radius:8px; margin-top:12px; object-fit:contain; max-height:300px;">' if entry.get(
-        "image_url") else ""
+        image_html = f'<img src="{entry["image_url"]}" style="width:100%; border-radius:8px; margin-top:12px; object-fit:contain; max-height:300px;">' if entry.get("image_url") else ""
 
-    st.markdown(f"""
-        <div style="
-            border-left: 3px solid #ff914d;
-            border-radius: 4px;
-            padding: 18px 20px;
-            margin-bottom: 16px;
-            font-family: 'Inter', sans-serif;
-        ">
-            <p style="color:#ff914d; font-size:11px; margin:0 0 10px 0;">{dt}</p>
-            <p style="font-size:15px; line-height:1.7; margin:0;">{entry['entry']}</p>
-            {image_html}
-        </div>
-    """, unsafe_allow_html=True)
-# 13. Spacer
+        st.markdown(f"""
+            <div style="
+                border-left: 3px solid #ff914d;
+                border-radius: 4px;
+                padding: 18px 20px;
+                margin-bottom: 16px;
+                font-family: 'Inter', sans-serif;
+            ">
+                <p style="color:#ff914d; font-size:11px; margin:0 0 10px 0;">{dt}</p>
+                <p style="font-size:15px; line-height:1.7; margin:0;">{entry['entry']}</p>
+                {image_html}
+            </div>
+        """, unsafe_allow_html=True)
+
 st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
-# 14. Settings section
 render_custom_header("Settings")
 
-col1, col2 = st.columns([4, 1])  # Adjust column widths to push button to the right
-
+col1, col2 = st.columns([4, 1])
 with col1:
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     render_custom_subheader("Logout of all sessions")
-
 with col2:
     if st.button("Logout", type="tertiary", icon=":material/logout:"):
         st.session_state.messages = []
