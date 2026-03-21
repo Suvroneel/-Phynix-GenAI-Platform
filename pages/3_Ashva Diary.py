@@ -103,9 +103,9 @@ st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 if st.button("Update bio", icon=":material/draw:"):
     update_profile(st.session_state["username"])
 
-st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
+#st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
 
-render_custom_header("Ashva Diaries")
+#render_custom_header("Ashva Diaries")
 
 #----------------------------------------------------
 entry_text = st.text_area(
