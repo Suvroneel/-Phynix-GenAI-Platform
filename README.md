@@ -1,4 +1,9 @@
-# Phynix: Mood Based GenAi Platform
+# Phynix
+
+> *The more you talk to it, the more it becomes YOURS.*
+
+Most AI talks at you. Phynix grows with you. It remembers how you felt last session, notices your patterns over time, and meets you where you actually are instead of starting from zero every single time.
+
 
 **🔗 Live Demo:** https://phynix.streamlit.app/
 
