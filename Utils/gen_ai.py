@@ -38,8 +38,8 @@ class PhynixAI:
             "gemma": "google/gemma-2-2b-it"
         }
         
-        # Default model - Zephyr is best for empathetic conversations
-        self.current_model = self.available_models["zephyr"]
+        # Default model 
+        self.current_model = self.available_models["llama"]
         
         # System prompt for mental health context
         self.system_prompt = """You are Ashva, a compassionate AI companion within the Phynix mental health platform. Your role is to:
