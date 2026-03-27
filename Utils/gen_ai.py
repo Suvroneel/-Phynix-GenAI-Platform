@@ -32,10 +32,7 @@ class PhynixAI:
         # Available models - verified working as of Jan 2025
         self.available_models = {
             "llama": "meta-llama/Llama-3.1-8B-Instruct",
-            "mistral": "mistralai/Mistral-7B-Instruct-v0.3",
-            "zephyr": "HuggingFaceH4/zephyr-7b-beta",
-            "phi": "microsoft/phi-2",
-            "gemma": "google/gemma-2-2b-it"
+            
         }
         
         # Default model 
