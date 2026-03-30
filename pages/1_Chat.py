@@ -207,9 +207,9 @@ if not is_returning_user and len(st.session_state.messages) == 0:
     st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
     st.markdown("""
         <div style='font-family: Inter, sans-serif; font-size:16px; color:#666; margin-top:20px; text-align: center;'>
-            Welcome to <strong>Phynix</strong> — a space to reflect and share what you're feeling.<br>
+            Welcome to <strong>Phynix</strong> , a space to reflect and share what you're feeling.<br>
             You can talk about your day, your thoughts, or anything that's been on your mind.<br>
-            I'm <strong>Ashva</strong>, your companion inside Phynix — here to listen, understand your emotional state, and support you gently.
+            I'm <strong>Ashva</strong>, your companion inside Phynix , here to listen, understand your emotional state, and support you gently.
         </div>
     """, unsafe_allow_html=True)
     st.markdown("""
