@@ -120,38 +120,20 @@ st.session_state["username"] = st.session_state.get("username", "You")
 try:
     response = supabase.table("user_credentials").select("user_name, email").eq("email", user_email).execute()
     if not response.data:
-        response = supabase.table("user_credentials").insert({
+        supabase.table("user_credentials").insert({
             "user_name": username,
             "email": user_email
         }).execute()
-        if response.error:
-            st.error(f"Failed to insert into user_credentials: {response.error.message}")
-            st.stop()
 except Exception as e:
     st.error(f"Error setting up user_credentials: {str(e)}")
     st.stop()
 
 # Ensure user_data has at least one row
-try:
-    response = supabase.table("user_data").select("index").eq("user_email", user_email).eq("user_name", username).execute()
-    if not response.data:
-        response = supabase.table("user_data").insert({
-            "user_email": user_email,
-            "user_name": username,
-            "messages": "Initial message",
-            "predicted_emotion": "neutral",
-            "risks": "low",
-            "replies": "Welcome to Phynix!"
-        }).execute()
-        if response.error:
-            st.error(f"Failed to insert initial row into user_data: {response.error.message}")
-            st.stop()
-except Exception as e:
-    st.error(f"Error setting up user_data: {str(e)}")
-    st.stop()
+
 
 # Check if returning user
-user_history_check = supabase.table("user_data").select("index").eq("user_email", user_email).execute()
+#user_history_check = supabase.table("user_data").select("index").eq("user_email", user_email).execute()
+user_history_check = supabase.table("user_data").select("index").eq("user_email", user_email).neq("messages", "Initial message").execute()
 is_returning_user = len(user_history_check.data) > 0
 
 render_sidebar_logo()
