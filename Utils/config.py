@@ -17,7 +17,7 @@ def set_config():
 
 
     st.set_page_config(
-        page_title="Project Phynix",
+        page_title="Phynix_AI",
         page_icon="favicon_io/Project_Phynix_icon_500x500.png",
         layout="centered",
         initial_sidebar_state="collapsed",
