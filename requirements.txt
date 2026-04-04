@@ -20,3 +20,7 @@ postgrest>=0.10.6
 
 # Auth
 streamlit-supabase-auth
+
+#RAG / vectordb
+pinecone>=3.0.0
+sentence-transformers>=2.2.0
