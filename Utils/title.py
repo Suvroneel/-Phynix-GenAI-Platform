@@ -8,7 +8,7 @@ def render_main_title():
 
     st.markdown("""
         <h1 style='font-family:"Montserrat"; color:; font-size: 48px;'>
-            Project Phynix
+            Phynix_AI
         </h1>
     """, unsafe_allow_html=True)
 
