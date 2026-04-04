@@ -8,7 +8,7 @@ from supabase import create_client, Client, ClientOptions
 import postgrest.exceptions
 from Utils.sidebar import render_sidebar_logo, render_sidebar_header
 from Utils.title import render_main_title, render_welcome_message, render_dynamic_greeting, new_tagline
-
+from Utils.memory import upsert_memory
 # Supabase setup
 supabase_url = st.secrets['SUPABASE_URL']
 supabase_key = st.secrets['SUPABASE_KEY']
@@ -207,9 +207,9 @@ if not is_returning_user and len(st.session_state.messages) == 0:
     st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
     st.markdown("""
         <div style='font-family: Inter, sans-serif; font-size:16px; color:#666; margin-top:20px; text-align: center;'>
-            Welcome to <strong>Phynix</strong> , a space to reflect and share what you're feeling.<br>
+            Welcome to <strong>Phynix</strong> — a space to reflect and share what you're feeling.<br>
             You can talk about your day, your thoughts, or anything that's been on your mind.<br>
-            I'm <strong>Ashva</strong>, your companion inside Phynix , here to listen, understand your emotional state, and support you gently.
+            I'm <strong>Ashva</strong>, your companion inside Phynix — here to listen, understand your emotional state, and support you gently.
         </div>
     """, unsafe_allow_html=True)
     st.markdown("""
@@ -300,6 +300,16 @@ if prompt:
             'risks': risk_level,
             'replies': ai_reply  # GenAI response instead of hard-coded
         }).execute()
+        # Upsert to RAG memory (Pinecone + pgvector)
+
+
+        upsert_memory(
+            record_id=f"chat_{next_id}",
+            text=prompt,
+            user_email=st.session_state["user_email"],
+            user_name=st.session_state["username"],
+            source="chat"
+        )
 
     except postgrest.exceptions.APIError as e:
         st.error(f"Failed to save data: {str(e)}")
