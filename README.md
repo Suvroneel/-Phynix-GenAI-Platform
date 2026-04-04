@@ -1,4 +1,4 @@
-# Phynix
+# Phynix Ai
 
 > *The more you talk to it, the more it becomes YOURS.*
 
