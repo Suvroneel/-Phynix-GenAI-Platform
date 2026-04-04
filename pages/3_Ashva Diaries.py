@@ -8,7 +8,10 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 import random
 from Utils.ashva import ashva_diary
+from Utils.memory import upsert_memory
 
+# Upsert to RAG memory
+import uuid
 IST = ZoneInfo("Asia/Kolkata")
 
 # 1. Setup Supabase
@@ -129,6 +132,17 @@ with colB:
         if entry_text.strip():
             image_url = upload_image(st.session_state["username"], uploaded_file) if uploaded_file else None
             insert_entry(st.session_state["username"], st.session_state["user_email"], entry_text.strip(), image_url)
+
+
+
+            upsert_memory(
+                record_id=f"diary_{uuid.uuid4().hex}",
+                text=entry_text.strip(),
+                user_email=st.session_state["user_email"],
+                user_name=st.session_state["username"],
+                source="diary"
+            )
+
             st.session_state.journal_input_key += 1
             st.session_state.show_entries = True
             st.rerun()
