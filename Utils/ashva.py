@@ -217,58 +217,67 @@ supabase: Client = create_client(supabase_url, supabase_key)
 # -------------------------For Chat Section-----------------------------------
 
 def display_welcome_message(username: str, email: str):
+    from Utils.memory import retrieve_memories
+    from Utils.gen_ai import PhynixAI
     import time
 
     with st.spinner("Processing your request..."):
-        # Simulate or wait for model processing (adjust based on your model call)
-        time.sleep(2)  # Replace with actual model response wait if needed
-
         try:
-            # Ensure auth session is set
             if "access_token" in st.session_state and "refresh_token" in st.session_state:
                 supabase.auth.set_session(st.session_state["access_token"], st.session_state["refresh_token"])
-            user = supabase.auth.get_user()
-            # Removed: st.write(f"JWT Email: {jwt_email}")
 
-            # Trim and lowercase inputs
-            clean_username = username.strip().lower()
             clean_email = email.strip().lower()
-            # First try: query with both user_name and user_email
-            response = supabase.table("user_data") \
-                .select("predicted_emotion") \
-                .eq("user_name", clean_username) \
+            clean_username = username.strip().lower()
+
+            # Try RAG first
+            last_msg_response = supabase.table("user_data") \
+                .select("messages") \
                 .eq("user_email", clean_email) \
                 .order("created_at", desc=True) \
                 .limit(1) \
                 .execute()
-            # Removed: st.write(f"Query 1 Response Data (user_name + user_email): {response.data}")
-            if response.data and len(response.data) > 0:
-                emotion = response.data[0]['predicted_emotion'].lower()
-                # Removed: st.write(f"Found emotion (Query 1): {emotion}")
+
+            query_text = last_msg_response.data[0]["messages"] if last_msg_response.data else None
+
+            memories = retrieve_memories(query=query_text, user_email=clean_email, top_k=4) if query_text else []
+
+            if memories:
+                # Condition 1: RAG working, LLM generates natural welcome
+                context = "\n".join([f"[{m['source']}]: {m['text']}" for m in memories])
+                ai = PhynixAI()
+                message = ai.generate_response(
+                    user_message="You are Ashva, a close friend who genuinely remembers what the user shared before. Write ONE casual sentence welcoming them back, referencing something specific from their past context in past tense, like you actually remember it. Sound like a real friend texting, not an AI. No quotation marks, no em dashes, no emoji, no formal language, no lists.",
+                    chat_history=[{
+                        "role": "user",
+                        "content": f"Here is what the user has shared before:\n{context}"
+                    }],
+                    max_tokens=100,
+                    temperature=0.85
+                )
+
             else:
-                # Fallback: query with only user_email
-                response = supabase.table("user_data") \
+                # Condition 2: No embeddings yet, fall back to emotion based message
+                emotion_response = supabase.table("user_data") \
                     .select("predicted_emotion") \
+                    .eq("user_name", clean_username) \
                     .eq("user_email", clean_email) \
                     .order("created_at", desc=True) \
                     .limit(1) \
                     .execute()
-                # Removed: st.write(f"Query 2 Response Data (user_email only): {response.data}")
-                if response.data and len(response.data) > 0:
-                    emotion = response.data[0]['predicted_emotion'].lower()
-                    # Removed: st.write(f"Found emotion (Query 2): {emotion}")
+
+                if emotion_response.data:
+                    emotion = emotion_response.data[0]['predicted_emotion'].lower()
+                    message = random.choice(return_user_emotion_messages.get(emotion, ["What's going on your mind?"]))
                 else:
-                    emotion = "neutral"
-                    # Removed: st.write(f"No data found for user_name: '{clean_username}', user_email: '{clean_email}'")
+                    # Condition 3: Brand new user, generic
+                    message = "Hey, welcome back! What's been going on with you lately? 😊"
+
         except Exception as e:
-            # Silently log the error instead of displaying it
             import logging
-            logging.basicConfig(level=logging.ERROR)
-            logging.error(f"Temporary error fetching welcome message: {str(e)}")
-            emotion = "neutral"
+            logging.error(f"RAG welcome error: {str(e)}")
+            message = "Hey, welcome back! What's on your mind today? 😊"
 
     try:
-        message = random.choice(return_user_emotion_messages.get(emotion, ["What's going on your mind ?"]))
         html_code = f"""
         <style>
         .bubble {{
@@ -300,13 +309,11 @@ def display_welcome_message(username: str, email: str):
                  style="width: 40px; height: 40px; margin-right: 12px; border-radius: 50%;" 
                  alt="Ashva">
             <div class="bubble">
-                <strong>Ashva:</strong> <span class="typing">{message}</span>
+                <strong>Ashva:</strong> {message}
             </div>
         </div>
         """
         components.html(html_code, height=160)
     except Exception as e:
-        # Silently log the error instead of displaying it
         import logging
-        logging.basicConfig(level=logging.ERROR)
-        logging.error(f"Temporary error rendering welcome message: {str(e)}")
+        logging.error(f"Welcome render error: {str(e)}")
