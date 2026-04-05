@@ -8,7 +8,7 @@ def render_main_title():
 
     st.markdown("""
         <h1 style='font-family:"Montserrat"; color:; font-size: 48px;'>
-            Project Phynix
+            Phynix_AI
         </h1>
     """, unsafe_allow_html=True)
 
@@ -91,6 +91,26 @@ def render_custom_header(header_text):
     st.markdown(f'<div class="streamlit-like-header">{header_text}</div>', unsafe_allow_html=True)
 
     # Default Streamlit divider
+    st.divider()
+
+
+
+def render_custom_header2(header_text):
+    st.markdown("""
+        <style>
+            .ashva-divider {
+                font-family: 'Inter', sans-serif;
+                font-size: 30px;
+                font-weight: 500;
+                color: var(--text-color);
+                margin-bottom: -8px;
+                margin-top: 0px;
+                padding-top: 0px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+
     st.divider()
 
 def render_custom_subheader(header_text):

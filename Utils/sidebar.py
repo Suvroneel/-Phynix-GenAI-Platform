@@ -21,7 +21,7 @@ def render_sidebar_header():
 
 def render_sidebar_logo():
 
-    st.sidebar.title('Project Phynix')
+    st.sidebar.title('Phynix_AI')
     st.sidebar.image('images/sigmund-ljJDx95-6gE-unsplash.png', use_container_width=False, width=100)
 
 # Utils/config.py

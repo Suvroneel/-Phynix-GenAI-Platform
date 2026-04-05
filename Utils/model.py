@@ -14,9 +14,8 @@ warnings.filterwarnings("ignore", category=UserWarning, module="huggingface_hub"
 # Cache model and tokenizer
 @st.cache_resource
 def load_model_and_tokenizer():
-    load_tokenizer = AutoTokenizer.from_pretrained("j-hartmann/emotion-english-distilroberta-base")
-                                                
-    load_model = AutoModelForSequenceClassification.from_pretrained("j-hartmann/emotion-english-distilroberta-base")
+    load_tokenizer = AutoTokenizer.from_pretrained("Suvroneel/phynix-emotion-model")
+    load_model = AutoModelForSequenceClassification.from_pretrained("Suvroneel/phynix-emotion-model")
                                                                     
     return load_tokenizer, load_model
 

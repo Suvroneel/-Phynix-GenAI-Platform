@@ -8,7 +8,7 @@ from supabase import create_client, Client, ClientOptions
 import postgrest.exceptions
 from Utils.sidebar import render_sidebar_logo, render_sidebar_header
 from Utils.title import render_main_title, render_welcome_message, render_dynamic_greeting, new_tagline
-
+from Utils.memory import upsert_memory
 # Supabase setup
 supabase_url = st.secrets['SUPABASE_URL']
 supabase_key = st.secrets['SUPABASE_KEY']
@@ -120,38 +120,20 @@ st.session_state["username"] = st.session_state.get("username", "You")
 try:
     response = supabase.table("user_credentials").select("user_name, email").eq("email", user_email).execute()
     if not response.data:
-        response = supabase.table("user_credentials").insert({
+        supabase.table("user_credentials").insert({
             "user_name": username,
             "email": user_email
         }).execute()
-        if response.error:
-            st.error(f"Failed to insert into user_credentials: {response.error.message}")
-            st.stop()
 except Exception as e:
     st.error(f"Error setting up user_credentials: {str(e)}")
     st.stop()
 
 # Ensure user_data has at least one row
-try:
-    response = supabase.table("user_data").select("index").eq("user_email", user_email).eq("user_name", username).execute()
-    if not response.data:
-        response = supabase.table("user_data").insert({
-            "user_email": user_email,
-            "user_name": username,
-            "messages": "Initial message",
-            "predicted_emotion": "neutral",
-            "risks": "low",
-            "replies": "Welcome to Phynix!"
-        }).execute()
-        if response.error:
-            st.error(f"Failed to insert initial row into user_data: {response.error.message}")
-            st.stop()
-except Exception as e:
-    st.error(f"Error setting up user_data: {str(e)}")
-    st.stop()
+
 
 # Check if returning user
-user_history_check = supabase.table("user_data").select("index").eq("user_email", user_email).execute()
+#user_history_check = supabase.table("user_data").select("index").eq("user_email", user_email).execute()
+user_history_check = supabase.table("user_data").select("index").eq("user_email", user_email).neq("messages", "Initial message").execute()
 is_returning_user = len(user_history_check.data) > 0
 
 render_sidebar_logo()
@@ -318,6 +300,16 @@ if prompt:
             'risks': risk_level,
             'replies': ai_reply  # GenAI response instead of hard-coded
         }).execute()
+        # Upsert to RAG memory (Pinecone + pgvector)
+
+
+        upsert_memory(
+            record_id=f"chat_{next_id}",
+            text=prompt,
+            user_email=st.session_state["user_email"],
+            user_name=st.session_state["username"],
+            source="chat"
+        )
 
     except postgrest.exceptions.APIError as e:
         st.error(f"Failed to save data: {str(e)}")

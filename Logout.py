@@ -10,7 +10,7 @@ from Utils.title import render_main_title, render_tagline
 
 #st.set_page_config(page_title=None, page_icon="images/sigmund-ljJDx95-6gE-unsplash.png", )
 st.set_page_config(
-    page_title="Phynix",
+    page_title="Phynix_AI",
     page_icon='images/icons/favicon.ico',
     initial_sidebar_state="collapsed"
 )
