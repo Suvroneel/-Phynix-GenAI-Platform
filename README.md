@@ -7,7 +7,7 @@ Most AI talks at you. Phynix grows with you. It remembers how you felt last sess
 
 **🔗 Live Demo:** https://phynix.streamlit.app/
 
-Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized AI-powered guidance. The heart of the system is **Ashva**, an intelligent companion powered by **BERT for emotion detection** and **advanced Generative AI models** for empathetic, context-aware conversations.
+Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized AI-powered guidance. The heart of the system is **Ashva**, an intelligent companion powered by **BERT for emotion detection** and **Llama 3.1** for empathetic, context-aware conversations.
 
 This platform is **multi-page**, **multi-layered**, and production-ready, combining a sophisticated frontend, hybrid AI/NLP backend, and relational database analytics.
 
@@ -19,10 +19,10 @@ This platform is **multi-page**, **multi-layered**, and production-ready, combin
 Ashva now actually remembers you. Not just your last emotion, but real context from both your past conversations and diary entries. Built a unified RAG pipeline using pgvector on Supabase PostgreSQL with sentence-transformers (all-MiniLM-L6-v2) for semantic embeddings. Every chat message and diary entry gets embedded and stored in a vector store. When you return, Ashva retrieves the most semantically relevant memories across both sources and uses them to generate a genuinely personal welcome, powered by the LLM. The more you talk and write, the more Ashva actually knows you. Falls back to emotion-based greeting if no embeddings exist yet, and a generic welcome for brand new users. This is what "the more you talk to it, the more it becomes YOURS" actually means under the hood.
 
 ### v2.1.1 - Ashva Diaries (Mood Journal) - March 2026
-Replaced the static placeholder with a fully functional journaling feature. Users can write daily reflections, optionally attach an image, and view today's entries as timestamped cards. Entries are stored in Supabase PostgreSQL with images in a dedicated Supabase Storage bucket. Fresh slate every day at midnight IST. Built with privacy-first design — no mood tagging, no sentiment analysis, just open reflection.
+Replaced the static placeholder with a fully functional journaling feature. Users can write daily reflections, optionally attach an image, and view today's entries as timestamped cards. Entries are stored in Supabase PostgreSQL with images in a dedicated Supabase Storage bucket. Fresh slate every day at midnight IST. Built with privacy-first design, no mood tagging, no sentiment analysis, just open reflection.
 
-### v2.0 - Multi-Model GenAI Backend - February 2026
-Replaced static hard-coded responses with a live multi-model GenAI backend. Ashva now generates dynamic, context-aware empathetic responses using 5 LLMs (Llama 3.1, Mistral 7B, Zephyr 7B, Phi-2, Gemma 2B) via Hugging Face Inference API. Users can switch models in real-time mid-conversation.
+### v2.0 - GenAI Backend - February 2026
+Replaced static hard-coded responses with a live GenAI backend. Ashva now generates dynamic, context-aware empathetic responses using Llama 3.1 (8B-Instruct) via Hugging Face Inference API.
 
 ---
 
@@ -48,8 +48,7 @@ Replaced static hard-coded responses with a live multi-model GenAI backend. Ashv
 
 Phynix serves as a **digital mental health companion**, combining:
 
-- **Hybrid Conversational AI**: Emotion classification via fine-tuned BERT, coupled with state-of-the-art Generative AI models for fluid, empathetic dialogue
-- **Multi-Model Architecture**: Supports 5 different AI models with real-time switching capabilities for optimal response quality
+- **Hybrid Conversational AI**: Emotion classification via fine-tuned BERT, coupled with Llama 3.1 for fluid, empathetic dialogue
 - **Analytics & Dashboards**: Track emotional trends, risk levels, and confidence metrics over time
 - **Private Journaling**: Secure mood journaling for personal reflection and mental health tracking
 
@@ -141,7 +140,7 @@ Phynix-Mental-Health-Chatbot/
 - **Login:** Users authenticate via Supabase; session tokens stored securely
 - **Signup:** Collects username, email, password; validates input; stores credentials in PostgreSQL
 - **UI & UX:** Tab-based, responsive forms with inline error messages and validation feedback
-- **Workflow:** Login → session storage → Chat page; Signup → email verification → Chat page
+- **Workflow:** Login -> session storage -> Chat page; Signup -> email verification -> Chat page
 
 ---
 
@@ -160,14 +159,9 @@ Phynix-Mental-Health-Chatbot/
   
 - **Emotion & Risk Analysis:**
   - BERT model classifies user input into seven emotion categories
-  - GenAI models generate contextually appropriate, empathetic responses based on detected emotion
+  - Llama 3.1 generates contextually appropriate, empathetic responses based on detected emotion
   - Risk levels and confidence scores calculated and displayed with emoji indicators
   - Collapsible analysis section showing emotion breakdown and risk assessment
-  
-- **Multi-Model Support:**
-  - Real-time model switching between 5 different AI architectures
-  - Adjustable creativity (temperature) and response length controls
-  - Model-specific optimizations for different conversation contexts
   
 - **Database Integration:**
   - Supabase/PostgreSQL stores complete conversation history
@@ -176,8 +170,7 @@ Phynix-Mental-Health-Chatbot/
   
 - **UX Enhancements:**
   - "New Chat" button with safe conversation reset
-  - Model selector with dropdown interface
-  - Real-time streaming responses with character-by-character display
+  - Real-time responses with character-by-character display
 
 ---
 
@@ -200,18 +193,18 @@ Phynix-Mental-Health-Chatbot/
 
 ### Mood Journal Page
 
-**Purpose:** A private space for daily reflection — write freely, attach a photo, and let your thoughts exist without judgment.
+**Purpose:** A private space for daily reflection, write freely, attach a photo, and let your thoughts exist without judgment.
 
 ![Mood Journal](https://github.com/Suvroneel/Phynix-GenAI-Platform/blob/Suvroneel-patch-1/Site%20Images/Ashva_diary.png)
 
 **Key Features & Technical Details:**
 
-- **Ashva Diaries** — open text journaling with optional image attachment
-- Fresh slate every day at midnight IST — no clutter from previous days
+- **Ashva Diaries** -- open text journaling with optional image attachment
+- Fresh slate every day at midnight IST -- no clutter from previous days
 - Entries stored securely in Supabase PostgreSQL with images in Supabase Storage bucket
 - Timestamped cards displaying today's reflections
 - Clear button to wipe today's view without deleting data
-- Privacy-first — no mood tagging, no sentiment analysis, no judgment
+- Privacy-first -- no mood tagging, no sentiment analysis, no judgment
 - Profile management with editable bio and verified badge
 - Authentication enforced via Supabase session tokens
 
@@ -227,9 +220,9 @@ Phynix-Mental-Health-Chatbot/
   - `journal-images` Supabase Storage bucket for image uploads
   
 - **AI Inference Pipeline:**
-  1. User input → Streamlit frontend
+  1. User input -> Streamlit frontend
   2. BERT emotion classification model predicts emotional state
-  3. Generative AI model (user-selected) generates contextual response
+  3. Llama 3.1 generates contextual, empathetic response
   4. Risk assessment algorithm calculates safety metrics
   5. All data persisted to PostgreSQL for analytics
   6. Dashboard queries historical data for trend visualization
@@ -247,55 +240,28 @@ Phynix-Mental-Health-Chatbot/
 - Real-time inference with sub-second response times
 
 ### Generative AI Response System
-Phynix leverages **Hugging Face Inference API** with support for **5 state-of-the-art language models**:
+Phynix uses **Llama 3.1 (8B-Instruct)** via the **Hugging Face Inference API** for all AI-generated responses.
 
-- **Llama 3.1 (8B-Instruct)** - Meta's flagship model
-  - Fast, general-purpose conversational AI
-  - Excellent instruction-following capabilities
-  - Strong context understanding
-
-- **Mistral (7B-Instruct)** - Mistral AI
-  - Superior reasoning and analytical responses
-  - Balanced between speed and quality
-  - Great for complex emotional discussions
-
-- **Zephyr (7B-Beta)** - HuggingFace
-  - Specifically optimized for chat interactions
-  - Empathetic response generation
-  - Fine-tuned for helpful, harmless conversations
-
-- **Phi-2** - Microsoft
-  - Lightweight and efficient
-  - Fast response times
-  - Good for quick supportive messages
-
-- **Gemma (2B-IT)** - Google
-  - Compact yet capable
-  - Balanced performance across use cases
-  - Optimized for instruction-following
+- **Fast, general-purpose conversational AI**
+- **Excellent instruction-following capabilities**
+- **Strong context understanding across multi-turn conversations**
+- **Emotion-aware prompting** -- responses are tailored to the user's detected emotional state
 
 ### AI Integration Features
-- **Real-time model switching** - Users can switch between models mid-conversation
-- **Context-aware responses** - Full conversation history maintained for coherent dialogue
-- **Temperature control** - Adjustable creativity from factual (0.0) to creative (1.0)
-- **Token length management** - Configurable response lengths (100-1000 tokens)
-- **Emotion-based prompting** - AI responses tailored to detected emotional state
-- **Fallback handling** - Graceful error management with user-friendly messages
+- **Context-aware responses** -- full conversation history maintained for coherent dialogue
+- **Temperature control** -- adjustable creativity from factual (0.0) to creative (1.0)
+- **Token length management** -- configurable response lengths
+- **Emotion-based prompting** -- AI responses tailored to detected emotional state
+- **Fallback handling** -- graceful error management with user-friendly messages
 
 ### Technical Implementation
 ```python
-# Multi-model architecture with dynamic selection
-models = {
-    "llama": "meta-llama/Llama-3.1-8B-Instruct",
-    "mistral": "mistralai/Mistral-7B-Instruct-v0.3",
-    "zephyr": "HuggingFaceH4/zephyr-7b-beta",
-    "phi": "microsoft/phi-2",
-    "gemma": "google/gemma-2-2b-it"
-}
+# Model used for all AI responses
+model = "meta-llama/Llama-3.1-8B-Instruct"
 
 # Inference pipeline
-1. User message → BERT emotion detection
-2. Emotion label + conversation history → GenAI model
+1. User message -> BERT emotion detection
+2. Emotion label + conversation history -> Llama 3.1
 3. AI generates empathetic, context-aware response
 4. Response stored with metadata (emotion, risk, confidence)
 ```
@@ -314,7 +280,6 @@ models = {
   - Collapsible analysis sections
   - Interactive progress charts and metrics
   - Motivational quotes and daily guidance
-  - Real-time model selector
   
 - **Custom CSS Styling:** 
   - Gradient buttons with hover effects
@@ -343,12 +308,7 @@ models = {
 
 ### Machine Learning & AI
 - **BERT (Transformers)** - Emotion classification model
-- **Hugging Face Inference API** - Multi-model GenAI backend
-  - Llama 3.1 (Meta)
-  - Mistral (Mistral AI)
-  - Zephyr (HuggingFace)
-  - Phi-2 (Microsoft)
-  - Gemma (Google)
+- **Hugging Face Inference API** - Llama 3.1 (8B-Instruct) GenAI backend
 - **PyTorch** - Deep learning framework
 - **TensorFlow** - Model training and inference
 
