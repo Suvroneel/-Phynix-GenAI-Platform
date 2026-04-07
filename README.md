@@ -7,7 +7,7 @@ Most AI talks at you. Phynix grows with you. It remembers how you felt last sess
 
 **🔗 Live Demo:** https://phynix.streamlit.app/
 
-Phynix is an **end-to-end AI mental health platform** designed to provide users a secure and interactive environment to express emotions, track mental well-being, and receive personalized AI-powered guidance. The heart of the system is **Ashva**, an intelligent companion powered by **BERT for emotion detection** and **Llama 3.1** for empathetic, context-aware conversations.
+Phynix is an **end-to-end mood-aware GenAI platform** designed to give users a personalised AI experience that genuinely evolves with them. The heart of the system is **Ashva**, an intelligent companion powered by **BERT for emotion detection** and **Llama 3.1** for empathetic, context-aware conversations.
 
 This platform is **multi-page**, **multi-layered**, and production-ready, combining a sophisticated frontend, hybrid AI/NLP backend, and relational database analytics.
 
@@ -46,13 +46,13 @@ Replaced static hard-coded responses with a live GenAI backend. Ashva now genera
 
 ## Overview
 
-Phynix serves as a **digital mental health companion**, combining:
+Phynix serves as a **mood-aware GenAI platform**, combining:
 
 - **Hybrid Conversational AI**: Emotion classification via fine-tuned BERT, coupled with Llama 3.1 for fluid, empathetic dialogue
 - **Analytics & Dashboards**: Track emotional trends, risk levels, and confidence metrics over time
-- **Private Journaling**: Secure mood journaling for personal reflection and mental health tracking
+- **Private Journaling**: Secure daily journaling that feeds into the RAG memory pool
 
-The platform emphasizes **privacy, data security, and actionable insights**, offering a mental refuge for individuals dealing with stress, anxiety, or depression.
+The platform emphasises **personalisation, privacy, and genuine contextual awareness** over generic AI responses.
 
 ---
 
@@ -185,7 +185,7 @@ Phynix-Mental-Health-Chatbot/
 
 - Interactive dashboard charts for emotion trends, confidence levels, and risk progression
 - Personalized advice based on emotional patterns
-- Daily motivational quotes and mental health tips
+- Daily motivational quotes and tips
 - Session-safe data retrieval ensures consistent metrics across pages
 - Visual analytics powered by historical conversation data
 
@@ -232,7 +232,7 @@ Phynix-Mental-Health-Chatbot/
 ## AI & NLP Layer
 
 ### Emotion Classification (BERT)
-- **Fine-tuned BERT model** for mental health context
+- **Fine-tuned BERT model** for emotion detection
 - Classifies user messages into **seven emotion categories**:
   - Joy, Sadness, Anger, Fear, Surprise, Disgust, Neutral
 - Provides **confidence scores** for each prediction
@@ -358,7 +358,7 @@ streamlit run Logout.py
 
 - [ ] **Analytics & ML**
   - Databricks / MLflow integration for experiment tracking
-  - Predictive mental health insights
+  - Predictive mood insights
   - Personalized intervention recommendations
   - Advanced sentiment analysis with multi-dimensional metrics
 
@@ -402,9 +402,8 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-- **Mental health resources:** If you're in crisis, please contact your local emergency services or mental health helpline
 - **Technology:** Built with Streamlit, Hugging Face, Supabase, and BERT
-- **Community:** Thanks to all contributors and mental health advocates
+- **Community:** Thanks to all contributors and supporters
 
 ---
 
