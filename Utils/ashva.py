@@ -214,7 +214,7 @@ supabase_key = st.secrets['SUPABASE_KEY']
 supabase: Client = create_client(supabase_url, supabase_key)
 
 
-# -------------------------For Chat Section-----------------------------------
+# -------------------------For Chat Section----------------------------------- Mainpart
 
 def display_welcome_message(username: str, email: str):
     from Utils.memory import retrieve_memories
